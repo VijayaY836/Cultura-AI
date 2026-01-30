@@ -6,6 +6,8 @@ A comprehensive digital platform showcasing the rich cultural heritage of Northe
 
 CULTURA is an immersive cultural heritage platform that celebrates the diverse traditions, festivals, languages, and communities of Northeast India. Built with modern web technologies, it provides an engaging way to explore and learn about the region's rich cultural tapestry.
 
+Prototype link - https://phenomenal-torrone-987885.netlify.app/ (Zoom out to 65%)
+
 ## Key Features
 
 ### Interactive Map

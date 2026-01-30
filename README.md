@@ -1,16 +1,16 @@
-# 🎭 CULTURA - Northeast India Cultural Heritage Platform
+# CULTURA - Northeast India Cultural Heritage Platform
 
 A comprehensive digital platform showcasing the rich cultural heritage of Northeast India's 8 states through interactive maps, cultural connections, language translation, and AI-powered assistance.
 
 ![CULTURA Platform](public/bg.png)
 
-## 🌟 Overview
+## Overview
 
 CULTURA is an immersive cultural heritage platform that celebrates the diverse traditions, festivals, languages, and communities of Northeast India. Built with modern web technologies, it provides an engaging way to explore and learn about the region's rich cultural tapestry.
 
-## ✨ Key Features
+## Key Features
 
-### 🗺️ Interactive Map
+### Interactive Map
 - **Real-time exploration** of all 8 Northeast Indian states
 - **Prominent map pins** with state-specific colors for easy identification
 - **Clean, professional design** without visual clutter

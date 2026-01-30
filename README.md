@@ -97,7 +97,7 @@ CULTURA is an immersive cultural heritage platform that celebrates the diverse t
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/cultura-ai.git
+   git clone https://github.com/VijayaY836/Cultura-AI.git
    cd cultura-ai
    ```
 
@@ -209,7 +209,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Northeast India Cultural Communities** for sharing their heritage
 - **Government of India BHASHINI** for translation services
-- **OpenStreetMap contributors** for geographical data
 - **Academic institutions** and cultural researchers
 - **Community elders** and cultural practitioners
 
@@ -217,9 +216,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions, suggestions, or collaboration opportunities:
 
-- **Project Website**: [CULTURA Platform](https://your-domain.com)
-- **Email**: contact@cultura-platform.com
-- **GitHub Issues**: [Report bugs or request features](https://github.com/your-username/cultura-ai/issues)
+
+- **Email**:
+- palomajestadi@gmail.com
+- vijayayeditha8537@gmail.com
+- saispoorthyeturu6@gmail.com
+- **GitHub Issues**: [Report bugs or request features](https://github.com/VijayaY836/Cultura-AI/issues)
 
 ---
 

@@ -160,15 +160,15 @@ cultura-ai/
 ## Prototype Screenshots
 <img width="1890" height="951" alt="image" src="https://github.com/user-attachments/assets/7d9f84b9-7760-4838-899b-6d990068939c" /> Interactive Map
 
+
 <img width="1889" height="957" alt="image" src="https://github.com/user-attachments/assets/1f71eccd-1e0e-4515-aa36-0b8960540c9e" />
 <img width="1894" height="961" alt="image" src="https://github.com/user-attachments/assets/5262c1f3-246d-4285-a56c-95d3368ae8f9" />  Cultural Connections
 
+
 <img width="1918" height="956" alt="image" src="https://github.com/user-attachments/assets/9014c4ff-a96f-461f-9bc5-345a554a40a9" /> Language Translator
 
+
 <img width="1890" height="954" alt="image" src="https://github.com/user-attachments/assets/a46370c7-8f39-450d-b83b-c71cf82d590a" /> Cultural Assistant (Chatbot)
-
-
-
 
 
 

@@ -2,8 +2,6 @@
 
 A comprehensive digital platform showcasing the rich cultural heritage of Northeast India's 8 states through interactive maps, cultural connections, language translation, and AI-powered assistance.
 
-![CULTURA Platform](public/bg.png)
-
 ## Overview
 
 CULTURA is an immersive cultural heritage platform that celebrates the diverse traditions, festivals, languages, and communities of Northeast India. Built with modern web technologies, it provides an engaging way to explore and learn about the region's rich cultural tapestry.
@@ -17,36 +15,36 @@ CULTURA is an immersive cultural heritage platform that celebrates the diverse t
 - **Detailed state information** with cultural statistics
 - **Responsive zoom and navigation** controls
 
-### 🎨 Cultural Connections & Heritage Discovery
+### Cultural Connections & Heritage Discovery
 - **Category-based organization** of cultural elements
 - **Advanced filtering** by type (Festivals, Rituals, Food, Arts, Dance, Traditions)
 - **Search functionality** across all cultural data
 - **Interactive cards** with detailed information
 - **Grid and list view options** for optimal browsing
 
-### 🌐 Language Translator
+### Language Translator
 - **Multi-language support**: English, Assamese, Manipuri, Bengali, Hindi
 - **BHASHINI API integration** (Government of India)
 - **Offline translation fallback** with comprehensive dictionary
 - **Cultural context awareness** for accurate translations
 - **Smart caching system** for improved performance
 
-### 🤖 AI Cultural Assistant
+### AI Cultural Assistant
 - **Intelligent chatbot** powered by comprehensive knowledge base
 - **Natural language processing** for cultural queries
 - **Sample questions** to guide user interactions
 - **Offline-first approach** with 40+ cultural entities
 - **Source attribution** and cultural context
 
-### 📊 Fun Facts & Statistics
+### Fun Facts & Statistics
 - **25+ fascinating facts** about Northeast India
 - **6 different categories**: Geography, Culture, Wildlife, Environment, Economy, Religion
 - **Interactive fact generation** with beautiful animations
 - **Comprehensive statistics** covering all 8 states
 
-## 🏛️ Cultural Coverage
+## Cultural Coverage
 
-### 🗺️ States Covered
+### States Covered
 - **Assam** - The Gateway to Northeast
 - **Arunachal Pradesh** - Land of Dawn-lit Mountains  
 - **Manipur** - Jewel of India
@@ -56,14 +54,14 @@ CULTURA is an immersive cultural heritage platform that celebrates the diverse t
 - **Sikkim** - The Hidden Paradise
 - **Tripura** - Land of Fourteen Gods
 
-### 🎭 Cultural Elements
+### Cultural Elements
 - **40+ Festivals**: Bihu, Hornbill, Losar, Wangala, Chapchar Kut, and more
 - **Traditional Foods**: Masor Tenga, Eromba, Axone, Jadoh, Thukpa, Gundruk
 - **Arts & Crafts**: Assam Silk, Bamboo Crafts, Wood Carving, Traditional Jewelry
 - **Dance Forms**: Bihu Dance, Manipuri Classical, Cheraw, Cham Dance
 - **Rituals & Traditions**: Lai Haraoba, Ambubachi Mela, Pang Lhabsol
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend
 - **React 19** - Modern UI framework
@@ -87,7 +85,7 @@ CULTURA is an immersive cultural heritage platform that celebrates the diverse t
 - **PostCSS** - CSS processing
 - **Autoprefixer** - CSS vendor prefixes
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -159,7 +157,7 @@ cultura-ai/
 └── README.md             # This file
 ```
 
-## 🎯 Features in Detail
+## Features in Detail
 
 ### Interactive Map
 - **8 Northeast states** with accurate geographical positioning
@@ -182,7 +180,7 @@ cultura-ai/
 - **Offline-first architecture** for reliable performance
 - **Cultural sensitivity** in all responses
 
-## 🌍 Cultural Impact
+## Cultural Impact
 
 CULTURA serves as a digital preservation platform for Northeast India's rich cultural heritage, providing:
 
@@ -192,7 +190,7 @@ CULTURA serves as a digital preservation platform for Northeast India's rich cul
 - **Language preservation** through translation services
 - **Intergenerational knowledge transfer** through digital archiving
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the community! Please see our contributing guidelines for:
 
@@ -201,18 +199,18 @@ We welcome contributions from the community! Please see our contributing guideli
 - **Feature enhancements** and bug fixes
 - **Documentation updates** and improvements
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Northeast India Cultural Communities** for sharing their heritage
 - **Government of India BHASHINI** for translation services
 - **Academic institutions** and cultural researchers
 - **Community elders** and cultural practitioners
 
-## 📞 Contact
+## Contact
 
 For questions, suggestions, or collaboration opportunities:
 

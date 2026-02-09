@@ -5,6 +5,7 @@ import EntityDetails from './components/EntityDetails';
 import InteractiveMap from './components/InteractiveMap';
 import LanguageSelector from './components/LanguageSelector';
 import FunFactsSection from './components/FunFactsSection';
+import AchievementShowcase from './components/AchievementShowcase';
 import CulturaErrorBoundary, { useErrorHandler } from './components/ErrorBoundary';
 import { getAllCulturalData } from './services/api';
 import { Sparkles, MessageCircle, Search, Globe, Filter, X, Menu, Bell, User, MapPin, Network, Languages, Bot } from 'lucide-react';
@@ -13,7 +14,7 @@ function AppContent() {
   const [selectedEntity, setSelectedEntity] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [language, setLanguage] = useState('en');
-  const [activeTab, setActiveTab] = useState('map'); // 'map', 'cultural', 'translator', 'assistant'
+  const [activeTab, setActiveTab] = useState('map'); // 'map', 'cultural', 'tourist-sites', 'historical-figures', 'translator', 'assistant', 'about'
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
@@ -215,7 +216,9 @@ function AppContent() {
                              entity.type === 'tradition' ? '✨' :
                              entity.type === 'food' ? '🍽️' :
                              entity.type === 'art' ? '🎨' :
-                             entity.type === 'dance' ? '💃' : '⭐'}
+                             entity.type === 'dance' ? '💃' :
+                             entity.type === 'tourist-site' ? '🏛️' :
+                             entity.type === 'historical-figure' ? '👑' : '⭐'}
                           </span>
                           <div className="flex-1">
                             <div className="font-semibold text-gray-800">{entity.name}</div>
@@ -243,10 +246,10 @@ function AppContent() {
 
           {/* Navigation Tabs */}
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setActiveTab('map')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeTab === 'map'
                     ? 'bg-indigo-600 text-white shadow-lg'
                     : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
@@ -258,7 +261,7 @@ function AppContent() {
               </button>
               <button
                 onClick={() => setActiveTab('cultural')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeTab === 'cultural'
                     ? 'bg-indigo-600 text-white shadow-lg'
                     : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
@@ -270,7 +273,7 @@ function AppContent() {
               </button>
               <button
                 onClick={() => setActiveTab('translator')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeTab === 'translator'
                     ? 'bg-indigo-600 text-white shadow-lg'
                     : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
@@ -282,7 +285,7 @@ function AppContent() {
               </button>
               <button
                 onClick={() => setActiveTab('assistant')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   activeTab === 'assistant'
                     ? 'bg-indigo-600 text-white shadow-lg'
                     : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
@@ -292,9 +295,21 @@ function AppContent() {
                 <span className="hidden sm:inline">AI Assistant</span>
                 <span className="sm:hidden">AI</span>
               </button>
+              <button
+                onClick={() => setActiveTab('about')}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  activeTab === 'about'
+                    ? 'bg-indigo-600 text-white shadow-lg'
+                    : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                }`}
+              >
+                <span className="text-lg">ℹ️</span>
+                <span className="hidden sm:inline">About</span>
+                <span className="sm:hidden">About</span>
+              </button>
             </div>
 
-            {/* Filter Controls - only show for cultural tab */}
+            {/* Filter Controls - show for cultural tab */}
             {activeTab === 'cultural' && (
               <div className="flex items-center gap-2">
                 <Filter className="text-gray-600" size={16} />
@@ -310,6 +325,8 @@ function AppContent() {
                   <option value="food">Food & Cuisine</option>
                   <option value="art">Arts & Crafts</option>
                   <option value="dance">Dance & Performance</option>
+                  <option value="tourist-site">Tourist Sites</option>
+                  <option value="historical-figure">Historical Figures</option>
                 </select>
               </div>
             )}
@@ -441,6 +458,180 @@ function AppContent() {
                 <CulturaErrorBoundary>
                   <EntityDetails entity={selectedEntity} language={language} />
                 </CulturaErrorBoundary>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'tourist-sites' && (
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {/* Tourist Sites - Main Content */}
+            <div className="xl:col-span-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6 h-[700px]">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🏛️</span>
+                    <h2 className="text-xl font-bold text-gray-800">Tourist Sites & Historic Attractions</h2>
+                  </div>
+                  {filterType !== 'all' && (
+                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium capitalize">
+                      {filterType}s
+                    </span>
+                  )}
+                </div>
+                <CulturaErrorBoundary>
+                  <KnowledgeGraph
+                    selectedEntity={null}
+                    entities={displayEntities.filter(e => e.type === 'tourist-site')}
+                    allEntities={allEntities}
+                    onNodeClick={handleEntitySelect}
+                  />
+                </CulturaErrorBoundary>
+              </div>
+            </div>
+
+            {/* Tourist Sites Info Sidebar */}
+            <div className="xl:col-span-1">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6 h-[700px] overflow-y-auto">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-xl">🗺️</span>
+                  <h3 className="font-semibold text-gray-800">Site Details</h3>
+                </div>
+                
+                {selectedEntity && selectedEntity.type === 'tourist-site' ? (
+                  <CulturaErrorBoundary>
+                    <EntityDetails entity={selectedEntity} language={language} />
+                  </CulturaErrorBoundary>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                      <h4 className="font-semibold text-blue-800 mb-2">🦏 Wildlife & Nature</h4>
+                      <div className="text-sm text-blue-700 space-y-1">
+                        <div>• Kaziranga National Park (Assam)</div>
+                        <div>• Dzukou Valley (Nagaland)</div>
+                        <div>• Loktak Lake (Manipur)</div>
+                        <div>• Phawngpui Blue Mountain (Mizoram)</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                      <h4 className="font-semibold text-purple-800 mb-2">🏛️ Spiritual & Historic</h4>
+                      <div className="text-sm text-purple-700 space-y-1">
+                        <div>• Kamakhya Temple (Assam)</div>
+                        <div>• Tawang Monastery (Arunachal Pradesh)</div>
+                        <div>• Kangla Fort (Manipur)</div>
+                        <div>• Rumtek Monastery (Sikkim)</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 border border-emerald-200">
+                      <h4 className="font-semibold text-emerald-800 mb-2">🌉 Unique Attractions</h4>
+                      <div className="text-sm text-emerald-700 space-y-1">
+                        <div>• Living Root Bridges (Meghalaya)</div>
+                        <div>• Unakoti Rock Sculptures (Tripura)</div>
+                        <div>• Nathula Pass (Sikkim)</div>
+                        <div>• Majuli Island (Assam)</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border border-orange-200">
+                      <h4 className="font-semibold text-orange-800 mb-2">⚔️ War Memorials</h4>
+                      <div className="text-sm text-orange-700 space-y-1">
+                        <div>• Kohima War Cemetery (Nagaland)</div>
+                        <div>• Battle of Saraighat sites (Assam)</div>
+                      </div>
+                    </div>
+
+                    <div className="text-center text-sm text-gray-600 mt-6 p-4 bg-gray-50 rounded-xl">
+                      Select any site to explore its history, significance, and cultural connections!
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'historical-figures' && (
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {/* Historical Figures - Main Content */}
+            <div className="xl:col-span-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6 h-[700px]">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">👑</span>
+                    <h2 className="text-xl font-bold text-gray-800">Historical Figures & Prominent Personalities</h2>
+                  </div>
+                  {filterType !== 'all' && (
+                    <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium capitalize">
+                      {filterType}s
+                    </span>
+                  )}
+                </div>
+                <CulturaErrorBoundary>
+                  <KnowledgeGraph
+                    selectedEntity={null}
+                    entities={displayEntities.filter(e => e.type === 'historical-figure')}
+                    allEntities={allEntities}
+                    onNodeClick={handleEntitySelect}
+                  />
+                </CulturaErrorBoundary>
+              </div>
+            </div>
+
+            {/* Historical Figures Info Sidebar */}
+            <div className="xl:col-span-1">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6 h-[700px] overflow-y-auto">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-xl">📜</span>
+                  <h3 className="font-semibold text-gray-800">Biography</h3>
+                </div>
+                
+                {selectedEntity && selectedEntity.type === 'historical-figure' ? (
+                  <CulturaErrorBoundary>
+                    <EntityDetails entity={selectedEntity} language={language} />
+                  </CulturaErrorBoundary>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-4 border border-red-200">
+                      <h4 className="font-semibold text-red-800 mb-2">⚔️ Freedom Fighters & Warriors</h4>
+                      <div className="text-sm text-red-700 space-y-1">
+                        <div>• Lachit Borphukan (Assam)</div>
+                        <div>• Rani Gaidinliu (Nagaland)</div>
+                        <div>• Bir Tikendrajit Singh (Manipur)</div>
+                        <div>• U Tirot Sing (Meghalaya)</div>
+                        <div>• Kiang Nangbah (Meghalaya)</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                      <h4 className="font-semibold text-blue-800 mb-2">🕉️ Spiritual & Cultural Leaders</h4>
+                      <div className="text-sm text-blue-700 space-y-1">
+                        <div>• Srimanta Sankardev (Assam)</div>
+                        <div>• 14th Dalai Lama (Arunachal Pradesh)</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                      <h4 className="font-semibold text-purple-800 mb-2">👑 Royal Personalities</h4>
+                      <div className="text-sm text-purple-700 space-y-1">
+                        <div>• Maharaja Bir Bikram (Tripura)</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 border border-emerald-200">
+                      <h4 className="font-semibold text-emerald-800 mb-2">🏆 Modern Icons</h4>
+                      <div className="text-sm text-emerald-700 space-y-1">
+                        <div>• MC Mary Kom (Manipur)</div>
+                        <div>• Laldenga (Mizoram)</div>
+                      </div>
+                    </div>
+
+                    <div className="text-center text-sm text-gray-600 mt-6 p-4 bg-gray-50 rounded-xl">
+                      Select any figure to learn about their life, contributions, and historical significance!
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -640,6 +831,163 @@ function AppContent() {
           </div>
         )}
 
+        {activeTab === 'about' && (
+          <div className="max-w-6xl mx-auto">
+            {/* About - Main Content */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg">
+                  ℹ️
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800">About CULTURA</h2>
+                  <p className="text-gray-600">Northeast India Cultural Heritage Platform</p>
+                </div>
+              </div>
+
+              {/* Platform Overview */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Platform Overview</h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  CULTURA is a comprehensive digital platform dedicated to preserving, showcasing, and promoting the rich cultural heritage of Northeast India. 
+                  Our mission is to create a bridge between traditional knowledge and modern technology, making the diverse cultures of the region accessible to everyone.
+                </p>
+                <p className="text-gray-700 leading-relaxed">
+                  The platform covers all 8 Northeast states with authentic, community-verified information about festivals, traditions, tourist sites, 
+                  historical figures, arts, crafts, cuisine, and more. We believe in respectful representation and proper attribution of indigenous knowledge.
+                </p>
+              </div>
+
+              {/* Achievement Showcase */}
+              <div className="mb-8">
+                <CulturaErrorBoundary>
+                  <AchievementShowcase entities={allEntities} />
+                </CulturaErrorBoundary>
+              </div>
+
+              {/* Data Sources & Attribution */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {/* Cultural Data Sources */}
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-lg">📚</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-800">Cultural Heritage Data</h4>
+                  </div>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div>• Northeast India Cultural Heritage Database</div>
+                    <div>• Community-contributed festival information</div>
+                    <div>• Tribal community documentation</div>
+                    <div>• Academic research publications</div>
+                    <div>• State tourism departments</div>
+                    <div>• Archaeological Survey of India</div>
+                  </div>
+                </div>
+
+                {/* Technology Partners */}
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-lg">🔧</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-800">Technology Stack</h4>
+                  </div>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div>• BHASHINI API (Government of India)</div>
+                    <div>• Leaflet Maps & OpenStreetMap</div>
+                    <div>• React 19 & Vite</div>
+                    <div>• Tailwind CSS</div>
+                    <div>• Offline-first AI Architecture</div>
+                    <div>• Progressive Web App (PWA)</div>
+                  </div>
+                </div>
+
+                {/* Community Acknowledgment */}
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-lg">🤝</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-800">Community Partners</h4>
+                  </div>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div>• Assamese Cultural Organizations</div>
+                    <div>• Manipuri Heritage Groups</div>
+                    <div>• Northeast Tribal Councils</div>
+                    <div>• Academic Institutions</div>
+                    <div>• State Cultural Departments</div>
+                    <div>• Local Community Leaders</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Ethical Data Practices */}
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 mb-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                    <span className="text-white text-sm">✓</span>
+                  </div>
+                  <h4 className="font-semibold text-green-800">Ethical Data Practices</h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-green-700">
+                  <div>• Community consent and attribution for all cultural data</div>
+                  <div>• Respectful representation of indigenous knowledge</div>
+                  <div>• Open source datasets with proper licensing</div>
+                  <div>• Privacy-compliant data collection and storage</div>
+                  <div>• Cultural sensitivity in content presentation</div>
+                  <div>• Regular community feedback and updates</div>
+                </div>
+              </div>
+
+              {/* Features Overview */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                  <h4 className="font-semibold text-blue-800 mb-3">Platform Features</h4>
+                  <div className="space-y-2 text-sm text-blue-700">
+                    <div>🗺️ Interactive map of Northeast India</div>
+                    <div>🔗 Cultural connections and relationships</div>
+                    <div>🏛️ Tourist sites and heritage locations</div>
+                    <div>👑 Historical figures and personalities</div>
+                    <div>🌐 Multi-language translation support</div>
+                    <div>🤖 AI-powered cultural assistant</div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
+                  <h4 className="font-semibold text-purple-800 mb-3">Educational Value</h4>
+                  <div className="space-y-2 text-sm text-purple-700">
+                    <div>📚 Comprehensive cultural database</div>
+                    <div>🎓 Perfect for students and researchers</div>
+                    <div>🧭 Tourism and travel planning</div>
+                    <div>🌍 Cultural awareness and appreciation</div>
+                    <div>🔍 Historical context and significance</div>
+                    <div>🎨 Arts, crafts, and traditional practices</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact and Contribution */}
+              <div className="text-center bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200">
+                <h4 className="font-semibold text-gray-800 mb-4">Community Contribution</h4>
+                <p className="text-sm text-gray-600 mb-4">
+                  This platform is built with respect for Northeast India's rich cultural heritage. 
+                  We welcome contributions, corrections, and feedback from community members to ensure accuracy and authenticity.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500">
+                  <span>© 2024 CULTURA Platform</span>
+                  <span>•</span>
+                  <span>Built for cultural preservation</span>
+                  <span>•</span>
+                  <span>Community-driven content</span>
+                  <span>•</span>
+                  <span>Open source initiative</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Search Results Summary */}
         {showSearch && (
           <div className="mt-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-6">
@@ -666,7 +1014,7 @@ function AppContent() {
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">
-                      {entity.type === 'festival' ? '🎉' : entity.type === 'ritual' ? '🕯️' : '✨'}
+                      {entity.type === 'festival' ? '🎉' : entity.type === 'ritual' ? '🕯️' : entity.type === 'tourist-site' ? '🏛️' : entity.type === 'historical-figure' ? '👑' : '✨'}
                     </span>
                     <div className="flex-1">
                       <div className="font-semibold text-gray-800">{entity.name}</div>
@@ -685,121 +1033,6 @@ function AppContent() {
           </div>
         )}
 
-        {/* Stats Section */}
-        <div className="mt-12 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-8">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Platform Statistics</h3>
-            <p className="text-gray-600">Comprehensive cultural data coverage</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { label: "Cultural Entities", value: allEntities.length, suffix: "+", color: "from-blue-500 to-indigo-500" },
-              { label: "NE States", value: "7", suffix: "", color: "from-emerald-500 to-teal-500" },
-              { label: "Languages", value: "6", suffix: "+", color: "from-purple-500 to-pink-500" },
-              { label: "Communities", value: "50", suffix: "+", color: "from-orange-500 to-red-500" }
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-1`}>
-                  {stat.value}{stat.suffix}
-                </div>
-                <div className="text-sm text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Attribution and Data Sources */}
-        <div className="mt-12 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-8 border border-gray-200">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Data Sources & Attribution</h3>
-            <p className="text-gray-600">Acknowledging the communities and sources that make this platform possible</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Cultural Data Sources */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-lg">📚</span>
-                </div>
-                <h4 className="font-semibold text-gray-800">Cultural Heritage Data</h4>
-              </div>
-              <div className="space-y-2 text-sm text-gray-600">
-                <div>• Northeast India Cultural Heritage Database</div>
-                <div>• Community-contributed festival information</div>
-                <div>• Tribal community documentation</div>
-                <div>• Academic research publications</div>
-              </div>
-            </div>
-
-            {/* Technology Partners */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-lg">🔧</span>
-                </div>
-                <h4 className="font-semibold text-gray-800">Technology Stack</h4>
-              </div>
-              <div className="space-y-2 text-sm text-gray-600">
-                <div>• BHASHINI API (Government of India)</div>
-                <div>• Leaflet Maps & OpenStreetMap</div>
-                <div>• React 19 & Vite</div>
-                <div>• Tailwind CSS</div>
-              </div>
-            </div>
-
-            {/* Community Acknowledgment */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-lg">🤝</span>
-                </div>
-                <h4 className="font-semibold text-gray-800">Community Partners</h4>
-              </div>
-              <div className="space-y-2 text-sm text-gray-600">
-                <div>• Assamese Cultural Organizations</div>
-                <div>• Manipuri Heritage Groups</div>
-                <div>• Northeast Tribal Councils</div>
-                <div>• Academic Institutions</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Ethical Data Practices */}
-          <div className="mt-8 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <h4 className="font-semibold text-green-800">Ethical Data Practices</h4>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-green-700">
-              <div>• Community consent and attribution for all cultural data</div>
-              <div>• Respectful representation of indigenous knowledge</div>
-              <div>• Open source datasets with proper licensing</div>
-              <div>• Privacy-compliant data collection and storage</div>
-              <div>• Cultural sensitivity in content presentation</div>
-              <div>• Regular community feedback and updates</div>
-            </div>
-          </div>
-
-          {/* Contact and Contribution */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 mb-4">
-              This platform is built with respect for Northeast India's rich cultural heritage. 
-              We welcome contributions, corrections, and feedback from community members.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500">
-              <span>© 2024 CULTURA Platform</span>
-              <span>•</span>
-              <span>Built for cultural preservation</span>
-              <span>•</span>
-              <span>Community-driven content</span>
-              <span>•</span>
-              <span>Open source initiative</span>
-            </div>
-          </div>
-        </div>
         </div>
       </main>
     </div>

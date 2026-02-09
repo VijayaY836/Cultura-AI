@@ -38,7 +38,9 @@ export default function KnowledgeGraph({ selectedEntity, entities, allEntities, 
     { id: 'tradition', name: 'Traditions', icon: '✨', color: 'from-emerald-500 to-teal-500' },
     { id: 'food', name: 'Food & Cuisine', icon: '🍽️', color: 'from-red-500 to-pink-500' },
     { id: 'art', name: 'Arts & Crafts', icon: '🎨', color: 'from-blue-500 to-cyan-500' },
-    { id: 'dance', name: 'Dance & Performance', icon: '💃', color: 'from-pink-500 to-rose-500' }
+    { id: 'dance', name: 'Dance & Performance', icon: '💃', color: 'from-pink-500 to-rose-500' },
+    { id: 'tourist-site', name: 'Tourist Sites', icon: '🏛️', color: 'from-indigo-500 to-blue-500' },
+    { id: 'historical-figure', name: 'Historical Figures', icon: '👑', color: 'from-yellow-500 to-amber-500' }
   ];
 
   return (
@@ -203,7 +205,9 @@ function EntityCard({ entity, isSelected, onClick, viewMode, categoryColor }) {
       tradition: '✨',
       food: '🍽️',
       art: '🎨',
-      dance: '💃'
+      dance: '💃',
+      'tourist-site': '🏛️',
+      'historical-figure': '👑'
     };
     return emojis[type] || '⭐';
   };

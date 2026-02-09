@@ -30,7 +30,9 @@ function generateKnowledgeBase() {
         tradition: '✨',
         food: '🍽️',
         art: '🎨',
-        dance: '💃'
+        dance: '💃',
+        'tourist-site': '🏛️',
+        'historical-figure': '👑'
       };
       return emojis[type] || '⭐';
     };
@@ -87,6 +89,63 @@ Northeast India is a treasure trove of cultural diversity, home to over 200 trib
 
 Each state and tribe maintains its unique identity while sharing common threads of harmony with nature, community living, and cultural preservation.`,
     sources: ['Northeast India Cultural Survey', 'Tribal Heritage Documentation', 'Ministry of Culture, Government of India']
+  };
+
+  knowledgeBase['tourist-sites'] = {
+    keywords: ['tourist sites', 'places to visit', 'tourism', 'attractions', 'monuments', 'heritage sites'],
+    response: `🏛️ **Major Tourist Sites of Northeast India**
+
+Northeast India offers incredible diversity in tourist attractions:
+
+🦏 **Wildlife & Nature**:
+- **Kaziranga National Park (Assam)**: UNESCO World Heritage Site, home to one-horned rhinoceros
+- **Dzukou Valley (Nagaland)**: Valley of flowers with seasonal blooms
+- **Loktak Lake (Manipur)**: Largest freshwater lake with floating islands
+
+🏔️ **Spiritual & Historic Sites**:
+- **Kamakhya Temple (Assam)**: Ancient Shakti Peetha and tantric worship center
+- **Tawang Monastery (Arunachal Pradesh)**: Largest monastery in India, birthplace of 6th Dalai Lama
+- **Rumtek Monastery (Sikkim)**: Seat of the Karmapa Lama
+
+🌉 **Unique Attractions**:
+- **Living Root Bridges (Meghalaya)**: Bioengineered bridges made from rubber tree roots
+- **Unakoti Rock Sculptures (Tripura)**: Ancient rock-cut sculptures from 7th-9th century
+- **Nathula Pass (Sikkim)**: Historic India-China border trade route
+
+🏰 **Cultural Heritage**:
+- **Majuli Island (Assam)**: World's largest river island with Vaishnavite monasteries
+- **Kangla Fort (Manipur)**: Ancient seat of Manipur rulers for over 2000 years
+- **Ujjayanta Palace (Tripura)**: Former royal palace, now state museum
+
+Each site offers unique insights into the region's rich history, spirituality, and natural beauty.`,
+    sources: ['Northeast Tourism Board', 'Archaeological Survey of India', 'UNESCO World Heritage Sites']
+  };
+
+  knowledgeBase['historical-figures'] = {
+    keywords: ['historical figures', 'freedom fighters', 'leaders', 'personalities', 'heroes', 'legends'],
+    response: `👑 **Prominent Historical Figures of Northeast India**
+
+Northeast India has produced many remarkable leaders and personalities:
+
+⚔️ **Freedom Fighters & Warriors**:
+- **Lachit Borphukan (Assam)**: 17th century Ahom general who defeated Mughals at Saraighat
+- **Rani Gaidinliu (Nagaland)**: Naga spiritual leader who fought British rule, imprisoned for 14 years
+- **Bir Tikendrajit Singh (Manipur)**: Prince who led resistance against British, executed in 1891
+- **U Tirot Sing (Meghalaya)**: First freedom fighter of Northeast, led Khasi resistance 1829-1833
+
+🕉️ **Spiritual & Cultural Leaders**:
+- **Srimanta Sankardev (Assam)**: 15th-16th century saint-scholar, founder of Neo-Vaishnavism
+- **14th Dalai Lama**: Spiritual leader with strong connection to Tawang, advocate for world peace
+
+👑 **Royal Personalities**:
+- **Maharaja Bir Bikram (Tripura)**: Last ruling king who modernized Tripura with democratic reforms
+
+🥊 **Modern Icons**:
+- **MC Mary Kom (Manipur)**: Olympic bronze medalist boxer, six-time world champion
+- **Laldenga (Mizoram)**: Leader who brought peace to Mizoram, first Chief Minister
+
+These figures represent the courage, spirituality, and cultural richness that define Northeast India's heritage.`,
+    sources: ['Historical Archives', 'Freedom Fighter Records', 'Cultural Heritage Documentation']
   };
 
   knowledgeBase['festivals'] = {
@@ -169,7 +228,25 @@ const SAMPLE_QUESTIONS = [
   "Tell me about Muga silk",
   "What is Thukpa?",
   "Describe Assam silk weaving",
-  "What is Eromba?"
+  "What is Eromba?",
+  "Tell me about Kaziranga National Park",
+  "What is Kamakhya Temple?",
+  "Describe Tawang Monastery",
+  "Tell me about Living Root Bridges",
+  "What is Loktak Lake?",
+  "Who was Srimanta Sankardev?",
+  "Tell me about Lachit Borphukan",
+  "Who was Rani Gaidinliu?",
+  "What is the Battle of Saraighat?",
+  "Tell me about Bir Tikendrajit Singh",
+  "Who was U Tirot Sing?",
+  "What is Dzukou Valley?",
+  "Tell me about Nathula Pass",
+  "What is Unakoti?",
+  "Who was Mary Kom?",
+  "Tell me about tourist places in Assam",
+  "What are the historic sites in Manipur?",
+  "Who are the freedom fighters of Northeast India?"
 ];
 
 /**
@@ -308,7 +385,14 @@ Ask me about any specific festival, food, or tradition for detailed information!
     'food': 'food-cuisine',
     'culture': 'northeast-culture',
     'dance': 'festivals',
-    'art': 'northeast-culture'
+    'art': 'northeast-culture',
+    'tourist': 'tourist-sites',
+    'tourism': 'tourist-sites',
+    'places': 'tourist-sites',
+    'historical': 'historical-figures',
+    'freedom fighter': 'historical-figures',
+    'leader': 'historical-figures',
+    'hero': 'historical-figures'
   };
   
   for (const [category, key] of Object.entries(categoryQueries)) {
@@ -336,9 +420,13 @@ Ask me about any specific festival, food, or tradition for detailed information!
 
 💃 **Dance Forms**: Bihu Dance, Manipuri Classical, Cheraw (Bamboo Dance), Sattriya, Cham Dance
 
-🏛️ **Cultural Heritage**: Traditional rituals, tribal customs, and community practices
+🏛️ **Tourist Sites**: Kaziranga National Park, Tawang Monastery, Living Root Bridges, Loktak Lake, Kamakhya Temple
 
-Try asking me about any of these topics! For example: "Tell me about Bihu festival" or "What is Masor Tenga?"`,
+👑 **Historical Figures**: Srimanta Sankardev, Lachit Borphukan, Rani Gaidinliu, U Tirot Sing, Mary Kom
+
+🏔️ **Cultural Heritage**: Traditional rituals, tribal customs, and community practices
+
+Try asking me about any of these topics! For example: "Tell me about Bihu festival", "What is Kaziranga National Park?", or "Who was Lachit Borphukan?"`,
     sources: ['CULTURA Knowledge Base'],
     confidence: 0.3
   };

@@ -1,26 +1,66 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ChatInterface from './components/ChatInterface';
 import KnowledgeGraph from './components/KnowledgeGraph';
 import EntityDetails from './components/EntityDetails';
 import InteractiveMap from './components/InteractiveMap';
 import LanguageSelector from './components/LanguageSelector';
-import FunFactsSection from './components/FunFactsSection';
 import AchievementShowcase from './components/AchievementShowcase';
+import Shop from './components/Shop';
+import Cart from './components/Cart';
+import Login from './components/Login';
+import UserProfile from './components/UserProfile';
+import SellerDashboard from './components/seller/SellerDashboard';
 import CulturaErrorBoundary, { useErrorHandler } from './components/ErrorBoundary';
+import { CartProvider, useCart } from './contexts/CartContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { getAllCulturalData } from './services/api';
-import { Sparkles, MessageCircle, Search, Globe, Filter, X, Menu, Bell, User, MapPin, Network, Languages, Bot } from 'lucide-react';
+import { Sparkles, MessageCircle, Search, Globe, Filter, X, Menu, Bell, User, MapPin, Network, Languages, Bot, ShoppingBag } from 'lucide-react';
 
 function AppContent() {
   const [selectedEntity, setSelectedEntity] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [language, setLanguage] = useState('en');
-  const [activeTab, setActiveTab] = useState('map'); // 'map', 'cultural', 'tourist-sites', 'historical-figures', 'translator', 'assistant', 'about'
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
   const [filterType, setFilterType] = useState('all'); // 'all', 'festival', 'ritual', 'tradition'
+  const [showProfile, setShowProfile] = useState(false);
   
   const handleError = useErrorHandler();
+  const { getCartItemsCount } = useCart();
+  const { user, isAuthenticated, isCustomer, isSeller, loading } = useAuth();
+
+  // Set default tab based on user mode
+  const getDefaultTab = () => {
+    if (isSeller) return 'seller-dashboard';
+    return 'map';
+  };
+  
+  const [activeTab, setActiveTab] = useState(getDefaultTab());
+
+  // Update active tab when user mode changes
+  useEffect(() => {
+    setActiveTab(getDefaultTab());
+  }, [isSeller, isCustomer]);
+
+  // Show login screen if not authenticated
+  if (!isAuthenticated && !loading) {
+    return <Login />;
+  }
+
+  // Show loading screen while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <span className="text-2xl text-white">🛍️</span>
+          </div>
+          <p className="text-gray-600">Loading CULTURA...</p>
+        </div>
+      </div>
+    );
+  }
   
   let allEntities = [];
   try {
@@ -164,8 +204,16 @@ function AppContent() {
                 <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                   <Bell size={20} className="text-gray-600" />
                 </button>
-                <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                  <User size={20} className="text-gray-600" />
+                <button 
+                  onClick={() => setShowProfile(true)}
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  {user?.picture ? (
+                    <img src={user.picture} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
+                  ) : (
+                    <User size={20} className="text-gray-600" />
+                  )}
+                  <span className="hidden md:inline text-sm font-medium text-gray-700">{user?.name}</span>
                 </button>
                 <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors md:hidden">
                   <Menu size={20} className="text-gray-600" />
@@ -247,54 +295,108 @@ function AppContent() {
           {/* Navigation Tabs */}
           <div className="flex items-center justify-between">
             <div className="flex gap-2 flex-wrap">
-              <button
-                onClick={() => setActiveTab('map')}
-                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeTab === 'map'
-                    ? 'bg-indigo-600 text-white shadow-lg'
-                    : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
-                }`}
-              >
-                <MapPin size={18} />
-                <span className="hidden sm:inline">Interactive Map</span>
-                <span className="sm:hidden">Map</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('cultural')}
-                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeTab === 'cultural'
-                    ? 'bg-indigo-600 text-white shadow-lg'
-                    : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
-                }`}
-              >
-                <Network size={18} />
-                <span className="hidden sm:inline">Cultural Connections</span>
-                <span className="sm:hidden">Cultural</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('translator')}
-                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeTab === 'translator'
-                    ? 'bg-indigo-600 text-white shadow-lg'
-                    : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
-                }`}
-              >
-                <Languages size={18} />
-                <span className="hidden sm:inline">Language Translator</span>
-                <span className="sm:hidden">Translator</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('assistant')}
-                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  activeTab === 'assistant'
-                    ? 'bg-indigo-600 text-white shadow-lg'
-                    : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
-                }`}
-              >
-                <Bot size={18} />
-                <span className="hidden sm:inline">AI Assistant</span>
-                <span className="sm:hidden">AI</span>
-              </button>
+              {/* Show different tabs based on user mode */}
+              {isCustomer && (
+                <>
+                  <button
+                    onClick={() => setActiveTab('map')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      activeTab === 'map'
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <MapPin size={18} />
+                    <span className="hidden sm:inline">Interactive Map</span>
+                    <span className="sm:hidden">Map</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('cultural')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      activeTab === 'cultural'
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <Network size={18} />
+                    <span className="hidden sm:inline">Cultural Connections</span>
+                    <span className="sm:hidden">Cultural</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('translator')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      activeTab === 'translator'
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <Languages size={18} />
+                    <span className="hidden sm:inline">Language Translator</span>
+                    <span className="sm:hidden">Translator</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('assistant')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      activeTab === 'assistant'
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <Bot size={18} />
+                    <span className="hidden sm:inline">AI Assistant</span>
+                    <span className="sm:hidden">AI</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('shop')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      activeTab === 'shop'
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <ShoppingBag size={18} />
+                    <span className="hidden sm:inline">Handloom Shop</span>
+                    <span className="sm:hidden">Shop</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('cart')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
+                      activeTab === 'cart'
+                        ? 'bg-indigo-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <div className="relative">
+                      <span className="text-lg">🛒</span>
+                      {getCartItemsCount() > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          {getCartItemsCount()}
+                        </span>
+                      )}
+                    </div>
+                    <span className="hidden sm:inline">Cart</span>
+                    <span className="sm:hidden">Cart</span>
+                  </button>
+                </>
+              )}
+
+              {/* Seller Mode Tabs */}
+              {isSeller && (
+                <button
+                  onClick={() => setActiveTab('seller-dashboard')}
+                  className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                    activeTab === 'seller-dashboard'
+                      ? 'bg-indigo-600 text-white shadow-lg'
+                      : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                  }`}
+                >
+                  <span className="text-lg">🏪</span>
+                  <span className="hidden sm:inline">Seller Dashboard</span>
+                  <span className="sm:hidden">Dashboard</span>
+                </button>
+              )}
+
+              {/* Common tabs for both modes */}
               <button
                 onClick={() => setActiveTab('about')}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
@@ -414,9 +516,7 @@ function AppContent() {
             </div>
 
             <div className="mt-8">
-              <CulturaErrorBoundary>
-                <FunFactsSection />
-              </CulturaErrorBoundary>
+              {/* Map content ends here */}
             </div>
           </>
         )}
@@ -831,6 +931,24 @@ function AppContent() {
           </div>
         )}
 
+        {activeTab === 'shop' && (
+          <CulturaErrorBoundary>
+            <Shop />
+          </CulturaErrorBoundary>
+        )}
+
+        {activeTab === 'cart' && (
+          <CulturaErrorBoundary>
+            <Cart />
+          </CulturaErrorBoundary>
+        )}
+
+        {activeTab === 'seller-dashboard' && isSeller && (
+          <CulturaErrorBoundary>
+            <SellerDashboard />
+          </CulturaErrorBoundary>
+        )}
+
         {activeTab === 'about' && (
           <div className="max-w-6xl mx-auto">
             {/* About - Main Content */}
@@ -1035,6 +1153,11 @@ function AppContent() {
 
         </div>
       </main>
+
+      {/* User Profile Modal */}
+      {showProfile && (
+        <UserProfile onClose={() => setShowProfile(false)} />
+      )}
     </div>
   );
 }
@@ -1042,9 +1165,13 @@ function AppContent() {
 // Wrap the main app content with error boundary
 function App() {
   return (
-    <CulturaErrorBoundary>
-      <AppContent />
-    </CulturaErrorBoundary>
+    <AuthProvider>
+      <CartProvider>
+        <CulturaErrorBoundary>
+          <AppContent />
+        </CulturaErrorBoundary>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

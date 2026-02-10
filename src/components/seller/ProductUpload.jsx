@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { Upload, X, Plus, Save } from 'lucide-react';
+import { useProducts } from '../../contexts/ProductContext';
+import { useToast } from '../../contexts/ToastContext';
+import { LoadingButton } from '../LoadingComponents';
 
 export default function ProductUpload({ onClose, onSave }) {
+  const { addProduct } = useProducts();
+  const { showSuccess } = useToast();
   const [productData, setProductData] = useState({
     name: '',
     price: '',
@@ -17,6 +22,7 @@ export default function ProductUpload({ onClose, onSave }) {
   });
 
   const [images, setImages] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   const categories = ['Sarees', 'Traditional Wear', 'Shawls', 'Traditional Cloth', 'Jackets'];
   const states = ['Assam', 'Manipur', 'Nagaland', 'Meghalaya', 'Mizoram', 'Tripura', 'Arunachal Pradesh', 'Sikkim'];
@@ -55,33 +61,58 @@ export default function ProductUpload({ onClose, onSave }) {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    // In a real app, you'd upload these to a server
-    setImages(prev => [...prev, ...files.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
-    }))]);
+    
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageData = {
+          file: file,
+          preview: event.target.result, // This will be the base64 data URL
+          name: file.name
+        };
+        setImages(prev => [...prev, imageData]);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const removeImage = (index) => {
     setImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
+    
+    // Simulate upload time
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
     const newProduct = {
       ...productData,
-      id: Date.now(),
+      id: Date.now(), // Unique ID for seller products
       price: parseFloat(productData.price),
       originalPrice: parseFloat(productData.originalPrice) || parseFloat(productData.price),
       stockCount: parseInt(productData.stockCount),
+      stock: parseInt(productData.stockCount), // Add stock field for consistency
       inStock: parseInt(productData.stockCount) > 0,
       rating: 0,
       reviews: 0,
-      images: images.map(img => img.preview)
+      sold: 0, // Initialize sold count
+      status: 'active', // Set default status
+      images: images.map(img => img.preview) // Use the base64 data URLs
     };
 
-    onSave(newProduct);
+    // Add to global product context (this will sync with customer shop)
+    addProduct(newProduct);
+
+    showSuccess(`${productData.name} added successfully!`);
+    setIsUploading(false);
+    
+    // Call the onSave callback if provided
+    if (onSave) {
+      onSave(newProduct);
+    }
+    
     onClose();
   };
 
@@ -316,13 +347,15 @@ export default function ProductUpload({ onClose, onSave }) {
             >
               Cancel
             </button>
-            <button
+            <LoadingButton
               type="submit"
+              loading={isUploading}
+              disabled={isUploading}
               className="flex-1 px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors font-semibold flex items-center justify-center gap-2"
             >
               <Save size={20} />
-              Save Product
-            </button>
+              {isUploading ? 'Uploading...' : 'Save Product'}
+            </LoadingButton>
           </div>
         </form>
       </div>

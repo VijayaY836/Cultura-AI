@@ -1,24 +1,27 @@
 import { useState } from 'react';
 import { BarChart3, Package, ShoppingCart, TrendingUp, Plus } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useProducts } from '../../contexts/ProductContext';
 import SellerProducts from './SellerProducts';
 import SellerOrders from './SellerOrders';
 import ProductUpload from './ProductUpload';
 
 export default function SellerDashboard() {
   const { user } = useAuth();
+  const { getSellerProducts } = useProducts();
   const [activeTab, setActiveTab] = useState('overview');
   const [showUpload, setShowUpload] = useState(false);
 
-  // Mock seller data
+  // Get real seller statistics from products
+  const sellerProducts = getSellerProducts();
   const sellerStats = {
-    totalProducts: 12,
-    totalOrders: 48,
-    totalRevenue: 125000,
-    pendingOrders: 5,
-    completedOrders: 43,
-    monthlyRevenue: 28500,
-    monthlyOrders: 12
+    totalProducts: sellerProducts.length,
+    totalOrders: sellerProducts.reduce((sum, p) => sum + (p.sold || 0), 0),
+    totalRevenue: sellerProducts.reduce((sum, p) => sum + ((p.price || 0) * (p.sold || 0)), 0),
+    pendingOrders: 5, // This would come from orders system
+    completedOrders: sellerProducts.reduce((sum, p) => sum + (p.sold || 0), 0),
+    monthlyRevenue: Math.round(sellerProducts.reduce((sum, p) => sum + ((p.price || 0) * (p.sold || 0)), 0) * 0.3), // Simulate monthly revenue
+    monthlyOrders: Math.round(sellerProducts.reduce((sum, p) => sum + (p.sold || 0), 0) * 0.3) // Simulate monthly orders
   };
 
   return (

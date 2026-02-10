@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { ShoppingBag, Filter, Search, Star, Heart, ShoppingCart } from 'lucide-react';
-import { handloomProducts, categories, states } from '../data/shopData';
+import { Filter, Search, Star, Heart, ShoppingCart } from 'lucide-react';
+import { categories, states } from '../data/shopData';
+import { useProducts } from '../contexts/ProductContext';
 import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useToast } from '../contexts/ToastContext';
+import { ProductGridSkeleton, LoadingButton } from './LoadingComponents';
 import ProductDetails from './ProductDetails';
+import Wishlist from './Wishlist';
 
 export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState('All Products');
@@ -11,8 +16,16 @@ export default function Shop() {
   const [sortBy, setSortBy] = useState('name');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [activeView, setActiveView] = useState('shop'); // 'shop' or 'wishlist'
+  const [quantities, setQuantities] = useState({}); // Track quantities for each product
   
-  const { addToCart, items } = useCart();
+  const { addToCart, isInCart } = useCart();
+  const { getAllProducts } = useProducts();
+  const { addToWishlist, removeFromWishlist, isInWishlist, getWishlistItemsCount } = useWishlist();
+  const { showSuccess, showCart, showWishlist } = useToast();
+  
+  // Get all products from the global context (includes both initial and seller products)
+  const handloomProducts = getAllProducts();
 
   // Filter products
   let filteredProducts = handloomProducts.filter(product => {
@@ -40,21 +53,41 @@ export default function Shop() {
   });
 
   const handleAddToCart = (product) => {
-    addToCart(product);
-    // Show success message (you can implement toast notifications)
-    alert(`${product.name} added to cart!`);
+    const quantity = quantities[product.id] || 1;
+    addToCart(product, quantity);
+    showCart(`${quantity} x ${product.name} added to cart!`);
+    // Reset quantity after adding to cart
+    setQuantities(prev => ({ ...prev, [product.id]: 1 }));
   };
 
-  const isInCart = (productId) => {
-    return items.some(item => item.id === productId);
+  const updateQuantity = (productId, quantity) => {
+    setQuantities(prev => ({ ...prev, [productId]: Math.max(1, quantity) }));
   };
+
+  const handleWishlistToggle = (product) => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+      showWishlist(`${product.name} removed from wishlist`);
+    } else {
+      addToWishlist(product);
+      showWishlist(`${product.name} added to wishlist!`);
+    }
+  };
+
+  // Show wishlist view
+  if (activeView === 'wishlist') {
+    return <Wishlist onBack={() => setActiveView('shop')} />;
+  }
 
   if (selectedProduct) {
     return (
       <ProductDetails 
         product={selectedProduct} 
         onBack={() => setSelectedProduct(null)}
-        onAddToCart={handleAddToCart}
+        onAddToCart={(product, quantity = 1) => {
+          addToCart(product, quantity);
+          showCart(`${quantity} x ${product.name} added to cart!`);
+        }}
         isInCart={isInCart(selectedProduct.id)}
       />
     );
@@ -64,8 +97,8 @@ export default function Shop() {
     <div className="max-w-7xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-8 mb-8">
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg">
               🛍️
             </div>
@@ -74,6 +107,20 @@ export default function Shop() {
               <p className="text-gray-600">Authentic Northeast Indian Traditional Wear</p>
             </div>
           </div>
+          
+          {/* Wishlist Button */}
+          <button
+            onClick={() => setActiveView('wishlist')}
+            className="flex items-center gap-2 px-4 py-2 bg-pink-100 text-pink-700 rounded-xl hover:bg-pink-200 transition-colors"
+          >
+            <Heart size={20} />
+            <span className="hidden sm:inline">Wishlist</span>
+            {getWishlistItemsCount() > 0 && (
+              <span className="bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {getWishlistItemsCount()}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
@@ -155,16 +202,43 @@ export default function Shop() {
           {filteredProducts.map(product => (
             <div key={product.id} className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
               {/* Product Image */}
-              <div className="relative h-64 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
-                <div className="text-6xl opacity-50">🧵</div>
+              <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                {product.images && product.images.length > 0 ? (
+                  <img 
+                    src={product.images[0]} 
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center absolute inset-0" style={{display: product.images && product.images.length > 0 ? 'none' : 'flex'}}>
+                  <span className="text-6xl opacity-50">🧵</span>
+                </div>
                 {!product.inStock && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                     <span className="text-white font-semibold">Out of Stock</span>
                   </div>
                 )}
                 <div className="absolute top-3 right-3">
-                  <button className="p-2 bg-white/80 rounded-full hover:bg-white transition-colors">
-                    <Heart size={16} className="text-gray-600" />
+                  <button 
+                    onClick={() => handleWishlistToggle(product)}
+                    className={`p-2 rounded-full transition-colors shadow-lg ${
+                      isInWishlist(product.id) 
+                        ? 'bg-pink-500 hover:bg-pink-600' 
+                        : 'bg-white/80 hover:bg-white'
+                    }`}
+                  >
+                    <Heart 
+                      size={16} 
+                      className={`${
+                        isInWishlist(product.id) 
+                          ? 'text-white fill-current' 
+                          : 'text-gray-600'
+                      }`} 
+                    />
                   </button>
                 </div>
                 {product.originalPrice > product.price && (
@@ -206,6 +280,35 @@ export default function Shop() {
                   By {product.artisan} • {product.village}
                 </div>
 
+                {/* Quantity Selection */}
+                {!isInCart(product.id) && product.inStock && (
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm text-gray-600">Qty:</span>
+                    <div className="flex items-center border border-gray-200 rounded-lg">
+                      <button
+                        onClick={() => updateQuantity(product.id, (quantities[product.id] || 1) - 1)}
+                        disabled={(quantities[product.id] || 1) <= 1}
+                        className="px-2 py-1 text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        -
+                      </button>
+                      <span className="px-3 py-1 text-sm font-medium min-w-[40px] text-center">
+                        {quantities[product.id] || 1}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(product.id, (quantities[product.id] || 1) + 1)}
+                        disabled={(quantities[product.id] || 1) >= (product.stock || product.stockCount || 10)}
+                        className="px-2 py-1 text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      ({product.stock || product.stockCount || 10} available)
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex gap-2">
                   <button
                     onClick={() => setSelectedProduct(product)}
@@ -213,7 +316,7 @@ export default function Shop() {
                   >
                     View Details
                   </button>
-                  <button
+                  <LoadingButton
                     onClick={() => handleAddToCart(product)}
                     disabled={!product.inStock || isInCart(product.id)}
                     className={`flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -229,9 +332,14 @@ export default function Shop() {
                     ) : isInCart(product.id) ? (
                       'In Cart'
                     ) : (
-                      <ShoppingCart size={16} />
+                      <div className="flex items-center gap-1">
+                        <ShoppingCart size={16} />
+                        {quantities[product.id] && quantities[product.id] > 1 && (
+                          <span className="text-xs">({quantities[product.id]})</span>
+                        )}
+                      </div>
                     )}
-                  </button>
+                  </LoadingButton>
                 </div>
               </div>
             </div>

@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { ArrowLeft, CreditCard, Truck, MapPin, Phone, Mail, User, CheckCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useProducts } from '../contexts/ProductContext';
+import { useToast } from '../contexts/ToastContext';
+import { LoadingButton } from './LoadingComponents';
 
 export default function Checkout({ onBack }) {
   const { items, getCartTotal, clearCart } = useCart();
+  const { processOrder } = useProducts();
+  const { showSuccess } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   
   const [shippingInfo, setShippingInfo] = useState({
     fullName: '',
@@ -32,9 +38,21 @@ export default function Checkout({ onBack }) {
     });
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    setIsPlacingOrder(true);
+    
+    // Simulate processing time
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Process the order - this will update sold counts and stock
+    processOrder(items);
+    
+    showSuccess(`Order placed successfully! Total: ₹${total.toLocaleString()}`);
+    
     // Simulate order placement
     setOrderPlaced(true);
+    setIsPlacingOrder(false);
+    
     setTimeout(() => {
       clearCart();
       // You could redirect to order confirmation page here
@@ -357,12 +375,14 @@ export default function Checkout({ onBack }) {
                 >
                   Back
                 </button>
-                <button
+                <LoadingButton
                   onClick={handlePlaceOrder}
+                  loading={isPlacingOrder}
+                  disabled={isPlacingOrder}
                   className="px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors font-semibold"
                 >
-                  Place Order
-                </button>
+                  {isPlacingOrder ? 'Processing...' : 'Place Order'}
+                </LoadingButton>
               </div>
             </div>
           )}

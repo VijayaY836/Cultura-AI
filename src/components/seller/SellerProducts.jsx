@@ -1,70 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Eye, Package, AlertCircle } from 'lucide-react';
+import { useProducts } from '../../contexts/ProductContext';
 import ProductUpload from './ProductUpload';
 
 export default function SellerProducts() {
   const [showUpload, setShowUpload] = useState(false);
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: 'Assamese Muga Silk Saree',
-      price: 8500,
-      originalPrice: 12000,
-      category: 'Sarees',
-      state: 'Assam',
-      stock: 15,
-      sold: 24,
-      status: 'active',
-      artisan: 'Kamala Devi',
-      village: 'Sualkuchi, Assam',
-      image: '🧵'
-    },
-    {
-      id: 2,
-      name: 'Naga Tribal Shawl',
-      price: 4800,
-      originalPrice: 6000,
-      category: 'Shawls',
-      state: 'Nagaland',
-      stock: 8,
-      sold: 18,
-      status: 'active',
-      artisan: 'Temsula Ao',
-      village: 'Mokokchung, Nagaland',
-      image: '🧵'
-    },
-    {
-      id: 3,
-      name: 'Manipuri Phanek',
-      price: 3200,
-      originalPrice: 4500,
-      category: 'Traditional Wear',
-      state: 'Manipur',
-      stock: 0,
-      sold: 12,
-      status: 'out_of_stock',
-      artisan: 'Ningombam Ongbi',
-      village: 'Imphal, Manipur',
-      image: '🧵'
-    }
-  ]);
+  const { getSellerProducts, deleteProduct } = useProducts();
+  
+  // Get seller products from the global context
+  const products = getSellerProducts();
 
   const handleSaveProduct = (newProduct) => {
-    setProducts(prev => [...prev, newProduct]);
+    // Products added by sellers get IDs starting from 1000 to avoid conflicts
+    const productWithId = {
+      ...newProduct,
+      id: Date.now() // This ensures unique IDs
+    };
+    // This will be handled by ProductUpload component now
   };
 
   const handleDeleteProduct = (productId) => {
     if (confirm('Are you sure you want to delete this product?')) {
-      setProducts(prev => prev.filter(p => p.id !== productId));
+      deleteProduct(productId);
     }
   };
 
   const toggleProductStatus = (productId) => {
-    setProducts(prev => prev.map(p => 
-      p.id === productId 
-        ? { ...p, status: p.status === 'active' ? 'inactive' : 'active' }
-        : p
-    ));
+    // This functionality will be added later if needed
+    console.log('Toggle status for product:', productId);
   };
 
   const getStatusColor = (status) => {
@@ -142,8 +105,21 @@ export default function SellerProducts() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map(product => (
             <div key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center relative">
-                <span className="text-6xl opacity-50">{product.image}</span>
+              <div className="h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
+                {product.images && product.images.length > 0 ? (
+                  <img 
+                    src={product.images[0]} 
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: product.images && product.images.length > 0 ? 'none' : 'flex'}}>
+                  <span className="text-6xl opacity-50">🧵</span>
+                </div>
                 <div className="absolute top-3 right-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
                     {product.status === 'active' ? 'Active' : 

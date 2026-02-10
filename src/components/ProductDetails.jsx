@@ -1,14 +1,26 @@
 import { useState } from 'react';
 import { ArrowLeft, Star, Heart, ShoppingCart, Truck, Shield, RotateCcw, Award } from 'lucide-react';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useToast } from '../contexts/ToastContext';
 
 export default function ProductDetails({ product, onBack, onAddToCart, isInCart }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [showReviews, setShowReviews] = useState(false);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { showWishlist } = useToast();
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      onAddToCart(product);
+    onAddToCart(product, quantity);
+  };
+
+  const handleWishlistToggle = () => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+      showWishlist(`${product.name} removed from wishlist`);
+    } else {
+      addToWishlist(product);
+      showWishlist(`${product.name} added to wishlist!`);
     }
   };
 
@@ -58,23 +70,61 @@ export default function ProductDetails({ product, onBack, onAddToCart, isInCart 
           {/* Product Images */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="aspect-square bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl flex items-center justify-center border border-gray-200">
-              <div className="text-8xl opacity-50">🧵</div>
+            <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 overflow-hidden">
+              {product.images && product.images.length > 0 ? (
+                <img 
+                  src={product.images[selectedImage] || product.images[0]} 
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: product.images && product.images.length > 0 ? 'none' : 'flex'}}>
+                <span className="text-8xl opacity-50">🧵</span>
+              </div>
             </div>
 
             {/* Thumbnail Images */}
             <div className="flex gap-4">
-              {[0, 1].map((index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`w-20 h-20 rounded-lg border-2 transition-colors ${
-                    selectedImage === index ? 'border-orange-500' : 'border-gray-200'
-                  } bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center`}
-                >
-                  <span className="text-2xl opacity-50">🧵</span>
-                </button>
-              ))}
+              {product.images && product.images.length > 0 ? (
+                product.images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`w-20 h-20 rounded-lg border-2 transition-colors overflow-hidden ${
+                      selectedImage === index ? 'border-orange-500' : 'border-gray-200'
+                    }`}
+                  >
+                    <img 
+                      src={image} 
+                      alt={`${product.name} ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: 'none'}}>
+                      <span className="text-2xl opacity-50">🧵</span>
+                    </div>
+                  </button>
+                ))
+              ) : (
+                [0, 1].map((index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`w-20 h-20 rounded-lg border-2 transition-colors ${
+                      selectedImage === index ? 'border-orange-500' : 'border-gray-200'
+                    } bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center`}
+                  >
+                    <span className="text-2xl opacity-50">🧵</span>
+                  </button>
+                ))
+              )}
             </div>
           </div>
 
@@ -196,8 +246,22 @@ export default function ProductDetails({ product, onBack, onAddToCart, isInCart 
                   {!product.inStock ? 'Out of Stock' : isInCart ? 'Added to Cart' : 'Add to Cart'}
                 </button>
                 
-                <button className="p-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                  <Heart size={20} className="text-gray-600" />
+                <button 
+                  onClick={handleWishlistToggle}
+                  className={`p-3 border rounded-xl transition-colors ${
+                    isInWishlist(product.id)
+                      ? 'border-pink-500 bg-pink-50 hover:bg-pink-100'
+                      : 'border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  <Heart 
+                    size={20} 
+                    className={`${
+                      isInWishlist(product.id) 
+                        ? 'text-pink-500 fill-current' 
+                        : 'text-gray-600'
+                    }`} 
+                  />
                 </button>
               </div>
             </div>

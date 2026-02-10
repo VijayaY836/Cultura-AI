@@ -13,6 +13,9 @@ import SellerDashboard from './components/seller/SellerDashboard';
 import CulturaErrorBoundary, { useErrorHandler } from './components/ErrorBoundary';
 import { CartProvider, useCart } from './contexts/CartContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ProductProvider } from './contexts/ProductContext';
+import { WishlistProvider } from './contexts/WishlistContext';
+import { ToastProvider } from './contexts/ToastContext';
 import { getAllCulturalData } from './services/api';
 import { Sparkles, MessageCircle, Search, Globe, Filter, X, Menu, Bell, User, MapPin, Network, Languages, Bot, ShoppingBag } from 'lucide-react';
 
@@ -1166,11 +1169,17 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <CulturaErrorBoundary>
-          <AppContent />
-        </CulturaErrorBoundary>
-      </CartProvider>
+      <ProductProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <ToastProvider>
+              <CulturaErrorBoundary>
+                <AppContent />
+              </CulturaErrorBoundary>
+            </ToastProvider>
+          </CartProvider>
+        </WishlistProvider>
+      </ProductProvider>
     </AuthProvider>
   );
 }

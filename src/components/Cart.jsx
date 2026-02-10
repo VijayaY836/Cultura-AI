@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Truck } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Truck, Heart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useToast } from '../contexts/ToastContext';
 import Checkout from './Checkout';
 
 export default function Cart() {
   const { items, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
+  const { addToWishlist, isInWishlist } = useWishlist();
+  const { showSuccess, showWishlist } = useToast();
   const [showCheckout, setShowCheckout] = useState(false);
 
   if (showCheckout) {
@@ -62,8 +66,21 @@ export default function Cart() {
                 <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
                   <div className="flex gap-4">
                     {/* Product Image */}
-                    <div className="w-24 h-24 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <span className="text-3xl opacity-50">🧵</span>
+                    <div className="w-24 h-24 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex-shrink-0 overflow-hidden">
+                      {item.images && item.images.length > 0 ? (
+                        <img 
+                          src={item.images[0]} 
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: item.images && item.images.length > 0 ? 'none' : 'flex'}}>
+                        <span className="text-3xl opacity-50">🧵</span>
+                      </div>
                     </div>
 
                     {/* Product Details */}
@@ -80,12 +97,34 @@ export default function Cart() {
                             By {item.artisan}
                           </div>
                         </div>
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              addToWishlist(item);
+                              if (!isInWishlist(item.id)) {
+                                showWishlist(`${item.name} added to wishlist!`);
+                              }
+                            }}
+                            disabled={isInWishlist(item.id)}
+                            className={`p-2 rounded-lg transition-colors ${
+                              isInWishlist(item.id)
+                                ? 'text-pink-500 bg-pink-50 cursor-not-allowed'
+                                : 'text-gray-500 hover:text-pink-500 hover:bg-pink-50'
+                            }`}
+                            title={isInWishlist(item.id) ? 'Already in wishlist' : 'Add to wishlist'}
+                          >
+                            <Heart size={18} className={isInWishlist(item.id) ? 'fill-current' : ''} />
+                          </button>
+                          <button
+                            onClick={() => {
+                              removeFromCart(item.id);
+                              showSuccess(`${item.name} removed from cart`);
+                            }}
+                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
                       </div>
 
                       <div className="flex items-center justify-between">

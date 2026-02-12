@@ -10,6 +10,7 @@ import Cart from './components/Cart';
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
 import SellerDashboard from './components/seller/SellerDashboard';
+import MoushumiAaita from './components/MoushumiAaita';
 import CulturaErrorBoundary, { useErrorHandler } from './components/ErrorBoundary';
 import { CartProvider, useCart } from './contexts/CartContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -17,7 +18,7 @@ import { ProductProvider } from './contexts/ProductContext';
 import { WishlistProvider } from './contexts/WishlistContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { getAllCulturalData } from './services/api';
-import { Sparkles, MessageCircle, Search, Globe, Filter, X, Menu, Bell, User, MapPin, Network, Languages, Bot, ShoppingBag } from 'lucide-react';
+import { Sparkles, MessageCircle, Search, Globe, Filter, X, Menu, Bell, User, MapPin, Network, Languages, Bot, ShoppingBag, Heart } from 'lucide-react';
 
 function AppContent() {
   const [selectedEntity, setSelectedEntity] = useState(null);
@@ -348,6 +349,18 @@ function AppContent() {
                     <Bot size={18} />
                     <span className="hidden sm:inline">AI Assistant</span>
                     <span className="sm:hidden">AI</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('aaita')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      activeTab === 'aaita'
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
+                    }`}
+                  >
+                    <Heart size={18} className={activeTab === 'aaita' ? 'fill-current' : ''} />
+                    <span className="hidden sm:inline">Moushumi Aaita</span>
+                    <span className="sm:hidden">Aaita</span>
                   </button>
                   <button
                     onClick={() => setActiveTab('shop')}
@@ -943,6 +956,12 @@ function AppContent() {
         {activeTab === 'cart' && (
           <CulturaErrorBoundary>
             <Cart />
+          </CulturaErrorBoundary>
+        )}
+
+        {activeTab === 'aaita' && (
+          <CulturaErrorBoundary>
+            <MoushumiAaita />
           </CulturaErrorBoundary>
         )}
 

@@ -1,7 +1,0 @@
-<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="400" height="400" fill="#F0FDF4"/>
-<rect x="50" y="50" width="300" height="300" fill="#86EFAC" rx="20"/>
-<path d="M120 120L280 120L280 280L120 280Z" fill="#22C55E" stroke="#16A34A" stroke-width="3"/>
-<path d="M150 150L250 150M150 180L250 180M150 210L250 210M150 240L250 240" stroke="#16A34A" stroke-width="2"/>
-<text x="200" y="380" text-anchor="middle" fill="#16A34A" font-family="Arial" font-size="16" font-weight="bold">Traditional Cloth</text>
-</svg>

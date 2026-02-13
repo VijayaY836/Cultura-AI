@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Filter, Search, Star, Heart, ShoppingCart } from 'lucide-react';
+import { Filter, Search, Star, Heart, ShoppingCart, ShoppingBag, SearchX } from 'lucide-react';
 import { categories, states } from '../data/shopData';
 import { useProducts } from '../contexts/ProductContext';
 import { useCart } from '../contexts/CartContext';
@@ -99,8 +99,8 @@ export default function Shop() {
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-8 mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg">
-              🛍️
+            <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
+              <ShoppingBag size={28} />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800">Handloom Shop</h1>
@@ -205,17 +205,26 @@ export default function Shop() {
               <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
                 {product.images && product.images.length > 0 ? (
                   <img 
-                    src={product.images[0]} 
+                    src={product.images[0].startsWith('data:') ? product.images[0] : `${product.images[0]}?t=${Date.now()}`}
                     alt={product.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
+                      console.error('Image failed to load:', product.images[0]);
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'flex';
                     }}
                   />
                 ) : null}
                 <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center absolute inset-0" style={{display: product.images && product.images.length > 0 ? 'none' : 'flex'}}>
-                  <span className="text-6xl opacity-50">🧵</span>
+                  <img 
+                    src={
+                      product.category === 'Sarees' ? '/muga-silk-saree.jpg' :
+                      product.category === 'Shawls' ? '/Elephants.jpg' :
+                      '/HandCrafts.jpg'
+                    } 
+                    alt="Product placeholder" 
+                    className="w-full h-full object-cover opacity-40" 
+                  />
                 </div>
                 {!product.inStock && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -349,7 +358,7 @@ export default function Shop() {
         {/* No Products Found */}
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
+            <SearchX size={64} className="mx-auto mb-4 text-gray-400" />
             <h3 className="text-xl font-semibold text-gray-800 mb-2">No products found</h3>
             <p className="text-gray-600">Try adjusting your search or filter criteria</p>
           </div>

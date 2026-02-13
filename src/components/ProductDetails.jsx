@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Star, Heart, ShoppingCart, Truck, Shield, RotateCcw, Award } from 'lucide-react';
+import { ArrowLeft, Star, Heart, ShoppingCart, Truck, Shield, RotateCcw, Award, Package } from 'lucide-react';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useToast } from '../contexts/ToastContext';
 
@@ -83,7 +83,15 @@ export default function ProductDetails({ product, onBack, onAddToCart, isInCart 
                 />
               ) : null}
               <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: product.images && product.images.length > 0 ? 'none' : 'flex'}}>
-                <span className="text-8xl opacity-50">🧵</span>
+                <img 
+                  src={
+                    product.category === 'Sarees' ? '/muga-silk-saree.jpg' :
+                    product.category === 'Shawls' ? '/Elephants.jpg' :
+                    '/HandCrafts.jpg'
+                  } 
+                  alt="Product placeholder" 
+                  className="w-full h-full object-cover opacity-40" 
+                />
               </div>
             </div>
 
@@ -108,7 +116,15 @@ export default function ProductDetails({ product, onBack, onAddToCart, isInCart 
                       }}
                     />
                     <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: 'none'}}>
-                      <span className="text-2xl opacity-50">🧵</span>
+                      <img 
+                        src={
+                          product.category === 'Sarees' ? '/muga-silk-saree.jpg' :
+                          product.category === 'Shawls' ? '/Elephants.jpg' :
+                          '/HandCrafts.jpg'
+                        } 
+                        alt="Product placeholder" 
+                        className="w-full h-full object-cover opacity-40" 
+                      />
                     </div>
                   </button>
                 ))
@@ -117,11 +133,19 @@ export default function ProductDetails({ product, onBack, onAddToCart, isInCart 
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-20 rounded-lg border-2 transition-colors ${
+                    className={`w-20 h-20 rounded-lg border-2 transition-colors overflow-hidden ${
                       selectedImage === index ? 'border-orange-500' : 'border-gray-200'
                     } bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center`}
                   >
-                    <span className="text-2xl opacity-50">🧵</span>
+                    <img 
+                      src={
+                        product.category === 'Sarees' ? '/muga-silk-saree.jpg' :
+                        product.category === 'Shawls' ? '/Elephants.jpg' :
+                        '/HandCrafts.jpg'
+                      } 
+                      alt="Product placeholder" 
+                      className="w-full h-full object-cover opacity-40" 
+                    />
                   </button>
                 ))
               )}

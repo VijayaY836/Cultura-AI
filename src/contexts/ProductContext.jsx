@@ -11,30 +11,8 @@ export const ProductProvider = ({ children }) => {
       return JSON.parse(savedProducts);
     }
     
-    // Start with initial products and add some seller products for demo
-    const sellerDemoProducts = [
-      {
-        id: 1001,
-        name: 'Handwoven Silk Scarf',
-        price: 2500,
-        originalPrice: 3000,
-        category: 'Shawls',
-        state: 'Assam',
-        stock: 10,
-        sold: 5,
-        status: 'active',
-        artisan: 'Demo Seller',
-        village: 'Demo Village, Assam',
-        images: ['/products/placeholder-4.svg'],
-        description: 'Beautiful handwoven silk scarf with traditional patterns.',
-        features: ['100% Silk', 'Handwoven', 'Traditional Design'],
-        rating: 4.5,
-        reviews: 8,
-        deliveryTime: '5-7 days'
-      }
-    ];
-    
-    return [...initialProducts, ...sellerDemoProducts];
+    // Start with initial products - no demo seller products with placeholder images
+    return [...initialProducts];
   };
 
   const [products, setProducts] = useState(getInitialProducts);

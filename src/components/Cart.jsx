@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Truck, Heart } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Truck, Heart, ShoppingCart, Package, PartyPopper } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useToast } from '../contexts/ToastContext';
@@ -47,8 +47,8 @@ export default function Cart() {
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 p-8 mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg">
-            🛒
+          <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
+            <ShoppingCart size={28} />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Shopping Cart</h1>
@@ -79,7 +79,15 @@ export default function Cart() {
                         />
                       ) : null}
                       <div className="w-full h-full bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center" style={{display: item.images && item.images.length > 0 ? 'none' : 'flex'}}>
-                        <span className="text-3xl opacity-50">🧵</span>
+                        <img 
+                          src={
+                            item.category === 'Sarees' ? '/muga-silk-saree.jpg' :
+                            item.category === 'Shawls' ? '/Elephants.jpg' :
+                            '/HandCrafts.jpg'
+                          } 
+                          alt="Product placeholder" 
+                          className="w-full h-full object-cover opacity-40" 
+                        />
                       </div>
                     </div>
 
@@ -206,8 +214,9 @@ export default function Cart() {
               </div>
 
               {shipping === 0 && (
-                <div className="text-sm text-green-600 bg-green-50 p-3 rounded-lg">
-                  🎉 You saved ₹150 on shipping!
+                <div className="text-sm text-green-600 bg-green-50 p-3 rounded-lg flex items-center gap-2">
+                  <PartyPopper size={16} />
+                  <span>You saved ₹150 on shipping!</span>
                 </div>
               )}
 

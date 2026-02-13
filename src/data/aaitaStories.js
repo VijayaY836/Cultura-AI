@@ -87,39 +87,145 @@ From that day onward, he never again mocked the smaller birds. And whenever clou
     illustration: '🐦'
   },
 
-  // Placeholder stories for other emotions - will be replaced with user's stories
+  // Fear Story - The Orphan and the Mountain
   {
-    id: 'placeholder-fear',
-    title: 'Story for Fear (Placeholder)',
+    id: 'orphan-mountain',
+    title: 'The Orphan and the Mountain',
     emotion: 'fear',
-    themes: ['courage', 'overcoming'],
+    themes: ['courage', 'protection', 'trust', 'nature', 'loneliness'],
     region: 'Northeast India',
-    story: `This is a placeholder story. The actual story will be provided by the user.`,
-    wisdom: "Placeholder wisdom",
-    moral: "Placeholder moral",
-    illustration: '🌟'
+    story: `High in the mountains where dawn touches the peaks before it reaches the valleys, there lived a small boy with no family.
+
+His parents had passed on when he was very young. The villagers gave him food when they could, but when night came and doors closed, the child often felt the weight of the world. The forests around the village were deep. The winds spoke in strange voices. Shadows stretched long.
+
+He was afraid.
+
+One evening, as he walked along a lonely path, he whispered, "Why must I be alone?"
+
+A soft flutter answered him.
+
+A little bird landed on a branch above his head and sang. Its song was gentle, like someone saying, I am here. The boy felt his breathing slow.
+
+The next day, he slipped near a stream. Before he could fall, his foot caught against a strong root, steadying him. It was as if the forest itself had reached out a hand.
+
+Another time, dark clouds gathered while he was far from home. Suddenly he noticed animals moving in one direction. Trusting them, he followed — and soon found a cave where he could stay dry and safe until the storm passed.
+
+Days became months. Months became years.
+
+The boy grew. And slowly he began to understand something important:
+
+Whenever he was hungry, fruit seemed easier to find. Whenever he was lost, a sound or a movement guided him. Whenever fear rose in his chest, wind, leaf, bird, or river answered.
+
+He had never truly walked alone.
+
+The mountains had watched him. The forest had guarded him. Life itself had kept him in its care.
+
+And with that knowledge, the orphan's heart grew brave.`,
+    wisdom: "We are often protected in ways we cannot see. Even in loneliness, the world may be quietly caring for us.",
+    moral: "We are often protected in ways we cannot see. Even in loneliness, the world may be quietly caring for us.",
+    illustration: '🌼'
   },
+  // Joy Story - Chhura the Lucky Fool
   {
-    id: 'placeholder-joy',
-    title: 'Story for Joy (Placeholder)',
+    id: 'chhura-lucky-fool',
+    title: 'Chhura the Lucky Fool',
     emotion: 'joy',
-    themes: ['celebration', 'happiness'],
+    themes: ['luck', 'sincerity', 'humor', 'fortune', 'simplicity'],
     region: 'Northeast India',
-    story: `This is a placeholder story. The actual story will be provided by the user.`,
-    wisdom: "Placeholder wisdom",
-    moral: "Placeholder moral",
-    illustration: '🎉'
+    story: `In a hill village lived a man named Chhura.
+
+Now everyone agreed on one thing about him: Chhura was not very bright.
+
+If someone told him, "Do a little," he might do too much. If they said, "Be careful," something would surely break.
+
+Yet, somehow, life had a strange habit of turning his blunders into success.
+
+One year, food was scarce. The village fields had not yielded well, and people were worried. They decided to send a few men into the forest to find anything edible.
+
+Chhura insisted on going.
+
+The others sighed. "Fine," they said, "but at least try not to ruin things."
+
+They spread out to search.
+
+After walking for hours, Chhura grew tired. He sat under a tree and thought, Searching is hard work. So instead, he began throwing stones at random bushes, just to pass time.
+
+Suddenly there was a loud rustle.
+
+The men came running, thinking Chhura had angered a wild animal.
+
+But when they reached him, they stared in amazement.
+
+His stones had frightened a group of fat jungle fowl hiding in the shrubs. In panic, the birds had flown straight into nets the hunters had set earlier and forgotten.
+
+Dinner — more than dinner! — food for many days.
+
+The villagers cheered.
+
+They lifted Chhura onto their shoulders. "What skill!" they cried.
+
+Chhura blinked, confused but pleased. He hadn't meant to be clever.
+
+Still, he smiled the biggest smile.
+
+Because once again, luck had decided to walk beside him.`,
+    wisdom: "Sincerity and a good heart can sometimes invite fortune, even when wisdom is small.",
+    moral: "Sincerity and a good heart can sometimes invite fortune, even when wisdom is small.",
+    illustration: '🌼'
   },
+  // Confusion Story - The Traveler in the Fog
   {
-    id: 'placeholder-confusion',
-    title: 'Story for Confusion (Placeholder)',
+    id: 'traveler-fog',
+    title: 'The Traveler in the Fog',
     emotion: 'confusion',
-    themes: ['clarity', 'guidance'],
+    themes: ['clarity', 'patience', 'stillness', 'wisdom', 'guidance'],
     region: 'Northeast India',
-    story: `This is a placeholder story. The actual story will be provided by the user.`,
-    wisdom: "Placeholder wisdom",
-    moral: "Placeholder moral",
-    illustration: '🧭'
+    story: `In the high hills where mountains speak softly to the sky, a traveler once walked alone.
+
+He had a small bag, a long road ahead, and many thoughts inside his head. He wanted to reach the next village before nightfall. He wanted certainty. He wanted to be sure he was going the right way.
+
+But the mountains had other plans.
+
+Without warning, a thick fog rolled in. It swallowed the trees. It erased the bends in the path. Soon the world became white and silent.
+
+The traveler's heart began to race.
+
+"What if I take the wrong turn?" "What if I walk toward danger?" "What if I never find my way?"
+
+Fear pushed him to move faster.
+
+Yet the faster he walked, the less he understood where he was.
+
+Finally, exhausted, he stopped.
+
+The old teachings of the hills returned to him: When you cannot see the road, make stillness your shelter.
+
+So he sat on a stone.
+
+He listened.
+
+At first, he heard only his own breathing. Then slowly, other sounds reached him — wind moving through bamboo, water flowing somewhere below, a distant bird calling from one side again and again.
+
+Time passed.
+
+The fog, having done its work, began to loosen its grip.
+
+Little by little, shapes returned. A tree. A curve in the earth. Stones placed by earlier travelers.
+
+And there it was.
+
+The path.
+
+It had been in front of him all along.
+
+The traveler stood, calmer now. He bowed to the mountains in gratitude. He understood something he would carry for the rest of his life:
+
+Running had stolen his direction. Waiting had given it back.
+
+And with quiet steps, he continued his journey.`,
+    wisdom: "Not every answer comes faster by rushing. Sometimes clarity arrives when we are still enough to receive it.",
+    moral: "Not every answer comes faster by rushing. Sometimes clarity arrives when we are still enough to receive it.",
+    illustration: '🌼'
   },
 
   // Anger Stories
@@ -216,84 +322,79 @@ And the people told their children, "Remember — even kindness can turn fierce 
     illustration: '🌊'
   },
 
-  // Universal Story for Neutral
+  // Story of Chitrāngadā - Bedtime Story
   {
-    id: 'grandmothers-wisdom',
-    title: 'The Grandmother\'s Wisdom',
-    emotion: 'neutral',
-    themes: ['wisdom', 'life lessons', 'guidance'],
-    region: 'Northeast India',
-    story: `Once, a young person came to their grandmother and asked, "Aaita, how do I live a good life? There are so many choices, so many paths. How do I know what's right?"
+    id: 'chitrangada-princess',
+    title: 'The Princess Warrior Chitrāngadā',
+    emotion: 'bedtime',
+    themes: ['duty', 'courage', 'patience', 'sacrifice', 'strength'],
+    region: 'Manipur',
+    story: `In the ancient land told in the Mahabharata, there once lived a brave princess named Chitrāngadā. She was the only child of the king of Manipura. With no son to inherit the throne, her father raised her like a warrior. She learned to ride horses, fight with weapons, and protect her people.
 
-The grandmother smiled and took the young one's hand. "Come, let me show you something."
+One day, the mighty hero Arjuna arrived in the kingdom during his travels. He saw Chitrāngadā's courage and grace and fell in love. Arjuna asked her father for permission to marry her.
 
-She led them to her garden where many different plants grew - some tall, some short, some flowering, some bearing fruit.
+The king agreed, but with one condition: their child must stay in Manipura and become its future ruler.
 
-"See these plants?" she said. "Each one is different. The bamboo grows tall and flexible. The rose grows with thorns but gives beautiful flowers. The rice plant bends low with the weight of its grain. The banyan tree spreads wide and gives shade to many."
+Arjuna accepted.
 
-"Which one is living the right way?" she asked.
+In time, a son was born — Babruvahana. Happiness filled the palace. But Arjuna was bound by his vow of exile and had to leave. Chitrāngadā stayed behind, raising her son to be wise, kind, and strong, even though her heart longed for her husband.
 
-The young person thought carefully. "They all are, Aaita. Each in their own way."
+Years passed.
 
-"Exactly!" the grandmother beamed. "There is no single right way to live. The bamboo cannot be a rose, and the rose cannot be bamboo. Each must be true to its own nature. Your task is not to be like others, but to discover who you truly are and grow in that direction."
+One day, Arjuna returned to Manipura. Babruvahana, not fully knowing his father, came forward respectfully. But Arjuna, proud and stern as a warrior, challenged the young king to prove his valor.
 
-"But how do I know who I truly am?"
+A fierce battle followed.
 
-"Listen to your heart, child. It knows. And remember - like these plants, you will face storms and droughts, but if your roots are strong in your values and your purpose, you will weather any season."`,
-    wisdom: "Be true to yourself. Your path is yours alone, and that's exactly as it should be. Grow in your own direction, at your own pace.",
-    moral: "The greatest wisdom is knowing yourself and having the courage to be yourself.",
-    illustration: '🌺'
+To everyone's horror, Babruvahana defeated Arjuna, who fell to the ground like a lifeless tree. Chitrāngadā rushed forward, torn between love for her husband and her son. Babruvahana wept in regret.
+
+At that moment, Ulupi appeared and used divine power to bring Arjuna back to life. Father and son embraced. Peace returned.
+
+Chitrāngadā watched them, her heart finally at rest.`,
+    wisdom: "True strength lies in duty, patience, and the courage to endure personal pain for the greater good.",
+    moral: "True strength lies in duty, patience, and the courage to endure personal pain for the greater good.",
+    illustration: '🌼'
   }
 ];
 
 export const getStoryByEmotion = (emotion, context = []) => {
-  // Find stories matching the emotion
+  console.log(`[getStoryByEmotion] Looking for emotion: "${emotion}"`);
+  
+  // Find stories matching the EXACT emotion only
   let matchingStories = stories.filter(story => story.emotion === emotion);
   
-  // If we have context, try to find stories that match both emotion and context themes
-  if (matchingStories.length > 1 && context.length > 0) {
-    const contextThemeMap = {
-      work: ['patience', 'wisdom', 'balance', 'preparation'],
-      study: ['courage', 'perseverance', 'wisdom'],
-      relationship: ['patience', 'understanding', 'humility'],
-      health: ['balance', 'wisdom', 'nature'],
-      life: ['wisdom', 'guidance', 'balance']
-    };
-    
-    // Try to find stories that match context themes
-    const contextThemes = context.flatMap(ctx => contextThemeMap[ctx] || []);
-    const contextMatchedStories = matchingStories.filter(story =>
-      story.themes.some(theme => contextThemes.includes(theme))
-    );
-    
-    if (contextMatchedStories.length > 0) {
-      matchingStories = contextMatchedStories;
-    }
-  }
+  console.log(`[getStoryByEmotion] Found ${matchingStories.length} stories for emotion "${emotion}":`, 
+    matchingStories.map(s => s.title));
   
-  // If no exact emotion match, find stories with similar themes
+  // If no stories found for this emotion, return null (should not happen with our current setup)
   if (matchingStories.length === 0) {
-    const emotionThemeMap = {
-      bedtime: ['balance', 'wisdom', 'nature', 'peace'],
-      fear: ['courage', 'strength', 'overcoming', 'protection'],
-      joy: ['celebration', 'gratitude', 'happiness', 'community'],
-      confusion: ['clarity', 'guidance', 'wisdom', 'decision-making'],
-      anger: ['patience', 'calm', 'wisdom', 'understanding']
-    };
-    
-    const themes = emotionThemeMap[emotion] || [];
-    matchingStories = stories.filter(story => 
-      story.themes.some(theme => themes.includes(theme))
-    );
-  }
-  
-  // If still no match, return the universal story
-  if (matchingStories.length === 0) {
-    return stories.find(story => story.id === 'grandmothers-wisdom');
+    console.error(`[getStoryByEmotion] ERROR: No stories found for emotion: ${emotion}`);
+    return null;
   }
   
   // Return a random story from matching stories
-  return matchingStories[Math.floor(Math.random() * matchingStories.length)];
+  const selectedStory = matchingStories[Math.floor(Math.random() * matchingStories.length)];
+  console.log(`[getStoryByEmotion] Selected story: "${selectedStory.title}" (id: ${selectedStory.id})`);
+  return selectedStory;
+};
+
+// Get another story from the same emotion, excluding the current one
+export const getAnotherStoryByEmotion = (emotion, currentStoryId, context = []) => {
+  // Find all stories matching the EXACT emotion, excluding the current one
+  let matchingStories = stories.filter(story => 
+    story.emotion === emotion && story.id !== currentStoryId
+  );
+  
+  console.log(`Looking for another "${emotion}" story. Found ${matchingStories.length} alternatives (excluding current)`);
+  
+  // If no other stories in this emotion, return null
+  if (matchingStories.length === 0) {
+    return null;
+  }
+  
+  // Return a random story from matching stories
+  const selectedStory = matchingStories[Math.floor(Math.random() * matchingStories.length)];
+  console.log(`Selected alternative story: "${selectedStory.title}"`);
+  return selectedStory;
 };
 
 export const getAllStories = () => stories;

@@ -4,7 +4,7 @@
 const emotionKeywords = {
   bedtime: {
     keywords: [
-      'tired', 'exhausted', 'sleepy', 'drowsy', 'bedtime', 'going to sleep', 'going to bed',
+      'bedtime', 'tired', 'exhausted', 'sleepy', 'drowsy', 'going to sleep', 'going to bed',
       'need rest', 'need sleep', 'want to sleep', 'time to sleep', 'ready for bed',
       'goodnight', 'good night', 'lullaby', 'peaceful', 'calm', 'relaxed', 'wind down',
       'end of day', 'nighttime', 'night time', 'restful', 'soothing'
@@ -14,7 +14,7 @@ const emotionKeywords = {
   },
   fear: {
     keywords: [
-      'afraid', 'scared', 'fear', 'fearful', 'terrified', 'frightened', 'anxious', 'worried',
+      'fear', 'afraid', 'scared', 'fearful', 'terrified', 'frightened', 'anxious', 'worried',
       'nervous', 'panic', 'panicking', 'scared of', 'afraid of', 'frightening', 'scary',
       'nightmare', 'nightmares', 'dark', 'alone', 'worried about', 'what if', 'danger',
       'unsafe', 'threatened', 'intimidated', 'overwhelmed', 'stressed'
@@ -24,7 +24,7 @@ const emotionKeywords = {
   },
   joy: {
     keywords: [
-      'happy', 'joyful', 'excited', 'great', 'wonderful', 'amazing', 'fantastic', 
+      'joy', 'joyful', 'happy', 'excited', 'great', 'wonderful', 'amazing', 'fantastic', 
       'blessed', 'grateful', 'thankful', 'delighted', 'cheerful', 'thrilled', 'ecstatic',
       'elated', 'overjoyed', 'jubilant', 'pleased', 'glad', 'merry', 'celebrating',
       'celebration', 'awesome', 'brilliant', 'excellent', 'perfect', 'love it',
@@ -35,7 +35,7 @@ const emotionKeywords = {
   },
   confusion: {
     keywords: [
-      'confused', 'lost', 'uncertain', 'unsure', 'don\'t know', 'unclear', 'puzzled',
+      'confusion', 'confused', 'lost', 'uncertain', 'unsure', 'don\'t know', 'unclear', 'puzzled',
       'bewildered', 'perplexed', 'baffled', 'mixed up', 'torn', 'conflicted',
       'can\'t decide', 'don\'t understand', 'makes no sense', 'what should i do',
       'which way', 'what to do', 'help me decide', 'so many choices', 'crossroads',
@@ -46,7 +46,7 @@ const emotionKeywords = {
   },
   anger: {
     keywords: [
-      'angry', 'mad', 'furious', 'annoyed', 'frustrated', 'irritated', 'upset', 'rage',
+      'anger', 'angry', 'mad', 'furious', 'annoyed', 'frustrated', 'irritated', 'upset', 'rage',
       'hate', 'bitter', 'resentful', 'enraged', 'livid', 'outraged', 'infuriated',
       'pissed', 'pissed off', 'ticked off', 'fed up', 'sick of', 'can\'t stand',
       'drives me crazy', 'makes me mad', 'so angry', 'want to scream', 'boiling',
@@ -113,9 +113,9 @@ export const analyzeSentiment = (text) => {
     }
   });
 
-  // Default to neutral if no emotion detected
+  // Default to bedtime if no emotion detected (neutral case)
   if (!primaryEmotion) {
-    primaryEmotion = 'neutral';
+    primaryEmotion = 'bedtime'; // Default to bedtime stories for neutral
     sentimentScore = 0;
   }
 

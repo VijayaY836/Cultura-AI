@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Heart, Sparkles, BookOpen, ArrowLeft, Share2, Bookmark } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Heart, Sparkles, BookOpen, ArrowLeft, Share2, Bookmark, RefreshCw, Volume2, VolumeX } from 'lucide-react';
 import { analyzeSentiment, getEmotionDescription, getAaitaResponse } from '../services/sentimentAnalysis';
-import { getStoryByEmotion } from '../data/aaitaStories';
+import { getStoryByEmotion, getAnotherStoryByEmotion } from '../data/aaitaStories';
 import { useToast } from '../contexts/ToastContext';
 import { LoadingSpinner } from './LoadingComponents';
 
@@ -11,7 +11,37 @@ export default function MoushumiAaita() {
   const [sentiment, setSentiment] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showStory, setShowStory] = useState(false);
+  const [isReading, setIsReading] = useState(false);
   const { showSuccess } = useToast();
+
+  // Speech synthesis state
+  const [speechSynthesis, setSpeechSynthesis] = useState(null);
+  const [voices, setVoices] = useState([]);
+
+  // Initialize speech synthesis
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      setSpeechSynthesis(window.speechSynthesis);
+      
+      // Load voices
+      const loadVoices = () => {
+        const availableVoices = window.speechSynthesis.getVoices();
+        setVoices(availableVoices);
+      };
+      
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
+  // Stop reading when component unmounts or story changes
+  useEffect(() => {
+    return () => {
+      if (speechSynthesis) {
+        speechSynthesis.cancel();
+      }
+    };
+  }, [speechSynthesis, currentStory]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,10 +54,12 @@ export default function MoushumiAaita() {
 
     // Analyze sentiment
     const analysis = analyzeSentiment(userInput);
+    console.log('[MoushumiAaita] Sentiment analysis result:', analysis);
     setSentiment(analysis);
 
     // Get matching story
     const story = getStoryByEmotion(analysis.primaryEmotion, analysis.context);
+    console.log('[MoushumiAaita] Story retrieved:', story ? story.title : 'NULL');
     setCurrentStory(story);
 
     setIsAnalyzing(false);
@@ -53,6 +85,101 @@ export default function MoushumiAaita() {
       showSuccess('Story saved to your favorites!');
       // In a real app, this would save to user's favorites
     }
+  };
+
+  const handleAnotherStory = async () => {
+    if (!sentiment) return;
+    
+    setIsAnalyzing(true);
+    setShowStory(false); // Hide current story during loading
+    
+    // Simulate loading time for effect
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Get another story from the same emotion category
+    const newStory = getAnotherStoryByEmotion(
+      sentiment.primaryEmotion, 
+      currentStory.id, 
+      sentiment.context
+    );
+    
+    if (newStory) {
+      setCurrentStory(newStory);
+      setShowStory(true);
+      showSuccess('Here\'s another story for you!');
+    } else {
+      setShowStory(true);
+      showSuccess('That was the only story for this emotion. Try asking Aaita something else!');
+    }
+    
+    setIsAnalyzing(false);
+  };
+
+  // Check if there are more stories available for the current emotion
+  const hasMoreStories = () => {
+    if (!sentiment || !currentStory) return false;
+    const anotherStory = getAnotherStoryByEmotion(
+      sentiment.primaryEmotion,
+      currentStory.id,
+      sentiment.context
+    );
+    return anotherStory !== null;
+  };
+
+  // Read aloud functionality
+  const handleReadAloud = () => {
+    if (!speechSynthesis || !currentStory) return;
+
+    if (isReading) {
+      // Stop reading
+      speechSynthesis.cancel();
+      setIsReading(false);
+      return;
+    }
+
+    // Start reading
+    const textToRead = `${currentStory.story}\n\nAaita's Wisdom: ${currentStory.wisdom}\n\nRemember, child: ${currentStory.moral}`;
+    const utterance = new SpeechSynthesisUtterance(textToRead);
+
+    // Try to find an Indian English voice
+    const indianVoice = voices.find(voice => 
+      voice.lang.includes('en-IN') || 
+      voice.name.includes('Indian') ||
+      voice.name.includes('India')
+    );
+
+    // Fallback to any English voice with female quality
+    const femaleEnglishVoice = voices.find(voice => 
+      voice.lang.startsWith('en') && 
+      (voice.name.includes('Female') || voice.name.includes('female'))
+    );
+
+    // Use the best available voice
+    if (indianVoice) {
+      utterance.voice = indianVoice;
+    } else if (femaleEnglishVoice) {
+      utterance.voice = femaleEnglishVoice;
+    }
+
+    // Voice settings for a sweet, elderly grandmother
+    utterance.rate = 0.85; // Slightly slower, like an elderly person telling a story
+    utterance.pitch = 1.5; // Slightly higher pitch for a feminine voice
+    utterance.volume = 1.0;
+
+    utterance.onstart = () => {
+      setIsReading(true);
+    };
+
+    utterance.onend = () => {
+      setIsReading(false);
+    };
+
+    utterance.onerror = () => {
+      setIsReading(false);
+      showSuccess('Unable to read aloud. Please check your browser settings.');
+    };
+
+    speechSynthesis.speak(utterance);
   };
 
   if (showStory && currentStory) {
@@ -155,6 +282,36 @@ export default function MoushumiAaita() {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4">
+              {hasMoreStories() && (
+                <button
+                  onClick={handleAnotherStory}
+                  disabled={isAnalyzing}
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <RefreshCw size={20} className={isAnalyzing ? 'animate-spin' : ''} />
+                  {isAnalyzing ? 'Finding Story...' : 'Another Story'}
+                </button>
+              )}
+              <button
+                onClick={handleReadAloud}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-colors shadow-lg ${
+                  isReading 
+                    ? 'bg-red-600 hover:bg-red-700 text-white' 
+                    : 'bg-green-600 hover:bg-green-700 text-white'
+                }`}
+              >
+                {isReading ? (
+                  <>
+                    <VolumeX size={20} />
+                    Stop Reading
+                  </>
+                ) : (
+                  <>
+                    <Volume2 size={20} />
+                    Read Aloud
+                  </>
+                )}
+              </button>
               <button
                 onClick={handleSave}
                 className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors shadow-lg"
@@ -174,7 +331,7 @@ export default function MoushumiAaita() {
                 className="flex items-center gap-2 px-6 py-3 bg-white text-purple-600 border-2 border-purple-600 rounded-xl hover:bg-purple-50 transition-colors"
               >
                 <BookOpen size={20} />
-                Hear Another Story
+                New Question
               </button>
             </div>
           </div>

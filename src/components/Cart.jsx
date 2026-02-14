@@ -5,7 +5,7 @@ import { useWishlist } from '../contexts/WishlistContext';
 import { useToast } from '../contexts/ToastContext';
 import Checkout from './Checkout';
 
-export default function Cart() {
+export default function Cart({ onBack }) {
   const { items, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
   const { addToWishlist, isInWishlist } = useWishlist();
   const { showSuccess, showWishlist } = useToast();
@@ -26,7 +26,7 @@ export default function Cart() {
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
             <p className="text-gray-600 mb-6">Add some beautiful handloom products to get started!</p>
             <button
-              onClick={() => window.history.back()}
+              onClick={onBack || (() => window.history.back())}
               className="px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors font-semibold"
             >
               Continue Shopping
@@ -244,7 +244,7 @@ export default function Cart() {
 
             <div className="mt-4 text-center">
               <button
-                onClick={() => window.history.back()}
+                onClick={onBack || (() => window.history.back())}
                 className="text-orange-600 hover:text-orange-700 font-medium transition-colors"
               >
                 Continue Shopping

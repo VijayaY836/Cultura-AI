@@ -6,13 +6,12 @@ import InteractiveMap from './components/InteractiveMap';
 import LanguageSelector from './components/LanguageSelector';
 import AchievementShowcase from './components/AchievementShowcase';
 import Shop from './components/Shop';
-import Cart from './components/Cart';
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
 import SellerDashboard from './components/seller/SellerDashboard';
 import MoushumiAaita from './components/MoushumiAaita';
 import CulturaErrorBoundary, { useErrorHandler } from './components/ErrorBoundary';
-import { CartProvider, useCart } from './contexts/CartContext';
+import { CartProvider } from './contexts/CartContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ProductProvider } from './contexts/ProductContext';
 import { WishlistProvider } from './contexts/WishlistContext';
@@ -31,7 +30,6 @@ function AppContent() {
   const [showProfile, setShowProfile] = useState(false);
   
   const handleError = useErrorHandler();
-  const { getCartItemsCount } = useCart();
   const { user, isAuthenticated, isCustomer, isSeller, loading } = useAuth();
 
   // Set default tab based on user mode
@@ -373,25 +371,6 @@ function AppContent() {
                     <ShoppingBag size={18} />
                     <span className="hidden sm:inline">Handloom Shop</span>
                     <span className="sm:hidden">Shop</span>
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('cart')}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
-                      activeTab === 'cart'
-                        ? 'bg-indigo-600 text-white shadow-lg'
-                        : 'bg-white/60 text-gray-700 hover:bg-white/80 hover:scale-105'
-                    }`}
-                  >
-                    <div className="relative">
-                      <span className="text-lg">🛒</span>
-                      {getCartItemsCount() > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                          {getCartItemsCount()}
-                        </span>
-                      )}
-                    </div>
-                    <span className="hidden sm:inline">Cart</span>
-                    <span className="sm:hidden">Cart</span>
                   </button>
                 </>
               )}
@@ -950,12 +929,6 @@ function AppContent() {
         {activeTab === 'shop' && (
           <CulturaErrorBoundary>
             <Shop />
-          </CulturaErrorBoundary>
-        )}
-
-        {activeTab === 'cart' && (
-          <CulturaErrorBoundary>
-            <Cart />
           </CulturaErrorBoundary>
         )}
 

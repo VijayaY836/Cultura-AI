@@ -8,6 +8,7 @@ import { useToast } from '../contexts/ToastContext';
 import { ProductGridSkeleton, LoadingButton } from './LoadingComponents';
 import ProductDetails from './ProductDetails';
 import Wishlist from './Wishlist';
+import Cart from './Cart';
 
 export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState('All Products');
@@ -16,10 +17,10 @@ export default function Shop() {
   const [sortBy, setSortBy] = useState('name');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [activeView, setActiveView] = useState('shop'); // 'shop' or 'wishlist'
+  const [activeView, setActiveView] = useState('shop'); // 'shop', 'wishlist', or 'cart'
   const [quantities, setQuantities] = useState({}); // Track quantities for each product
   
-  const { addToCart, isInCart } = useCart();
+  const { addToCart, isInCart, items: cartItems } = useCart();
   const { getAllProducts } = useProducts();
   const { addToWishlist, removeFromWishlist, isInWishlist, getWishlistItemsCount } = useWishlist();
   const { showSuccess, showCart, showWishlist } = useToast();
@@ -79,6 +80,11 @@ export default function Shop() {
     return <Wishlist onBack={() => setActiveView('shop')} />;
   }
 
+  // Show cart view
+  if (activeView === 'cart') {
+    return <Cart onBack={() => setActiveView('shop')} />;
+  }
+
   if (selectedProduct) {
     return (
       <ProductDetails 
@@ -108,19 +114,36 @@ export default function Shop() {
             </div>
           </div>
           
-          {/* Wishlist Button */}
-          <button
-            onClick={() => setActiveView('wishlist')}
-            className="flex items-center gap-2 px-4 py-2 bg-pink-100 text-pink-700 rounded-xl hover:bg-pink-200 transition-colors"
-          >
-            <Heart size={20} />
-            <span className="hidden sm:inline">Wishlist</span>
-            {getWishlistItemsCount() > 0 && (
-              <span className="bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {getWishlistItemsCount()}
-              </span>
-            )}
-          </button>
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
+            {/* Cart Button */}
+            <button
+              onClick={() => setActiveView('cart')}
+              className="flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-xl hover:bg-orange-200 transition-colors"
+            >
+              <ShoppingCart size={20} />
+              <span className="hidden sm:inline">Cart</span>
+              {cartItems.length > 0 && (
+                <span className="bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
+
+            {/* Wishlist Button */}
+            <button
+              onClick={() => setActiveView('wishlist')}
+              className="flex items-center gap-2 px-4 py-2 bg-pink-100 text-pink-700 rounded-xl hover:bg-pink-200 transition-colors"
+            >
+              <Heart size={20} />
+              <span className="hidden sm:inline">Wishlist</span>
+              {getWishlistItemsCount() > 0 && (
+                <span className="bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {getWishlistItemsCount()}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

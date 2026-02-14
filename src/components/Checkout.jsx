@@ -189,24 +189,15 @@ export default function Checkout({ onBack }) {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     State *
                   </label>
-                  <select
+                  <input
+                    type="text"
                     name="state"
                     value={shippingInfo.state}
                     onChange={handleInputChange}
+                    placeholder="Enter your state"
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     required
-                  >
-                    <option value="">Select State</option>
-                    <option value="Assam">Assam</option>
-                    <option value="Manipur">Manipur</option>
-                    <option value="Nagaland">Nagaland</option>
-                    <option value="Meghalaya">Meghalaya</option>
-                    <option value="Mizoram">Mizoram</option>
-                    <option value="Tripura">Tripura</option>
-                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                    <option value="Sikkim">Sikkim</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  />
                 </div>
 
                 <div className="md:col-span-2">

@@ -1,10 +1,10 @@
-import { Trophy, Target, Users, Globe, Database, Zap } from 'lucide-react';
+import { Trophy, Target, Users, Globe, Database, Zap, ShoppingBag, BookOpen, Heart } from 'lucide-react';
 
 export default function AchievementShowcase({ entities }) {
   const achievements = [
     {
       icon: <Database className="text-blue-600" size={24} />,
-      title: "Comprehensive Database",
+      title: "Cultural Database",
       value: `${entities.length}+`,
       description: "Cultural entities documented",
       color: "from-blue-500 to-indigo-500",
@@ -21,37 +21,37 @@ export default function AchievementShowcase({ entities }) {
       borderColor: "border-emerald-200"
     },
     {
-      icon: <Users className="text-purple-600" size={24} />,
-      title: "Cultural Diversity",
-      value: "200+",
-      description: "Tribal communities represented",
+      icon: <BookOpen className="text-purple-600" size={24} />,
+      title: "AI Stories",
+      value: "8",
+      description: "Traditional folktales with AI",
       color: "from-purple-500 to-pink-500",
       bgColor: "from-purple-50 to-pink-50",
       borderColor: "border-purple-200"
     },
     {
-      icon: <Target className="text-orange-600" size={24} />,
-      title: "Tourist Attractions",
-      value: `${entities.filter(e => e.type === 'tourist-site').length}`,
-      description: "Heritage sites documented",
+      icon: <ShoppingBag className="text-orange-600" size={24} />,
+      title: "Handloom Shop",
+      value: "Live",
+      description: "E-commerce for artisans",
       color: "from-orange-500 to-red-500",
       bgColor: "from-orange-50 to-red-50",
       borderColor: "border-orange-200"
     },
     {
-      icon: <Trophy className="text-amber-600" size={24} />,
-      title: "Historical Figures",
-      value: `${entities.filter(e => e.type === 'historical-figure').length}`,
-      description: "Prominent personalities featured",
-      color: "from-amber-500 to-yellow-500",
-      bgColor: "from-amber-50 to-yellow-50",
-      borderColor: "border-amber-200"
+      icon: <Heart className="text-rose-600" size={24} />,
+      title: "Emotion Detection",
+      value: "5",
+      description: "AI sentiment categories",
+      color: "from-rose-500 to-pink-500",
+      bgColor: "from-rose-50 to-pink-50",
+      borderColor: "border-rose-200"
     },
     {
       icon: <Zap className="text-cyan-600" size={24} />,
       title: "AI-Powered",
       value: "Smart",
-      description: "Offline chatbot with contextual responses",
+      description: "Offline chatbot & NLP",
       color: "from-cyan-500 to-blue-500",
       bgColor: "from-cyan-50 to-blue-50",
       borderColor: "border-cyan-200"
@@ -60,29 +60,49 @@ export default function AchievementShowcase({ entities }) {
 
   const specialFeatures = [
     {
-      emoji: "",
+      emoji: "👵",
+      title: "Moushumi Aaita",
+      description: "AI storytelling grandmother with sentiment analysis and read-aloud"
+    },
+    {
+      emoji: "🛍️",
+      title: "Handloom Marketplace",
+      description: "Full e-commerce platform supporting local artisans"
+    },
+    {
+      emoji: "🌐",
       title: "Multi-Language Support",
       description: "6+ regional languages with BHASHINI API integration"
     },
     {
-      emoji: "🔗",
-      title: "Cultural Connections",
-      description: "Smart linking between sites, figures, and traditions"
+      emoji: "🔐",
+      title: "Google OAuth",
+      description: "Secure authentication with user profiles and roles"
     },
     {
-      emoji: "📱",
-      title: "Responsive Design",
-      description: "Works perfectly on all devices and screen sizes"
+      emoji: "🛒",
+      title: "Shopping Features",
+      description: "Cart, wishlist, checkout with multiple payment options"
+    },
+    {
+      emoji: "📊",
+      title: "Seller Dashboard",
+      description: "Product management, inventory tracking, and analytics"
+    },
+    {
+      emoji: "🎭",
+      title: "Sentiment Analysis",
+      description: "AI-powered emotion detection for personalized stories"
+    },
+    {
+      emoji: "🔊",
+      title: "Text-to-Speech",
+      description: "Read aloud stories with Indian English voice"
     },
     {
       emoji: "⚡",
-      title: "Offline-First",
-      description: "AI chatbot works without internet connection"
-    },
-    {
-      emoji: "🎨",
-      title: "Beautiful UI",
-      description: "Modern design with cultural theming and animations"
+      title: "Real-Time Sync",
+      description: "Instant product and inventory updates across platform"
     }
   ];
 
@@ -133,9 +153,9 @@ export default function AchievementShowcase({ entities }) {
           >
             <div className="flex items-center gap-3 mb-2">
               <span className="text-2xl">{feature.emoji}</span>
-              <h4 className="font-semibold text-gray-800">{feature.title}</h4>
+              <h4 className="font-semibold text-gray-800 text-sm">{feature.title}</h4>
             </div>
-            <p className="text-sm text-gray-600">{feature.description}</p>
+            <p className="text-xs text-gray-600">{feature.description}</p>
           </div>
         ))}
       </div>
